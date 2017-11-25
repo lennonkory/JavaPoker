@@ -9,6 +9,14 @@ import kcomp.poker.commonpoker.enums.Suit;
 
 public class Hand {
 
+	public Map<Rank, Integer> getRanks() {
+		return ranks;
+	}
+
+	public Map<Suit, Integer> getSuits() {
+		return suits;
+	}
+
 	List<Card> cards;
 
 	private Map<Rank, Integer> ranks;
