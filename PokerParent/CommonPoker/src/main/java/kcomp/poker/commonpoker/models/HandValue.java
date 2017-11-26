@@ -10,6 +10,10 @@ public class HandValue {
 	private List<Card> mainCards;
 	private List<Card> kickers;
 
+	public HandValue() {
+		this.handRank = HandRank.HIGH_CARD;
+	}
+
 	public HandRank getHandRank() {
 		return handRank;
 	}
