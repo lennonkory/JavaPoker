@@ -13,7 +13,7 @@ import kcomp.poker.commonpoker.models.Hand;
 import kcomp.poker.commonpoker.models.HandValue;
 import kcomp.poker.commonpoker.utilities.HandUtility;
 
-public class TwoPairRanker implements HandRanker {
+public class PairRanker implements HandRanker {
 
 	@Override
 	public HandValue getHandValue(Hand hand) throws HandRankException {
@@ -22,8 +22,7 @@ public class TwoPairRanker implements HandRanker {
 
 		Map<Rank, Integer> ranks = hand.getRanks();
 
-		Rank firstPair = null;
-		Rank secondPair = null;
+		Rank pair = null;
 
 		// May need to change this loop to custom order
 		for (Rank rank : Rank.values()) {
@@ -31,65 +30,49 @@ public class TwoPairRanker implements HandRanker {
 			Integer value = ranks.get(rank);
 
 			if (value == 2) {
-				if (firstPair == null) {
-					firstPair = rank;
-				} else {
-					secondPair = rank;
-					break;
-				}
+				pair = rank;
 			}
 		}
 
-		if (firstPair == null || secondPair == null) {
+		if (pair == null) {
 			handValue.setHandRank(HandRank.HIGH_CARD);
 			return handValue;
 		}
 
 		// Set main cards
-		setMainCards(firstPair, secondPair, hand.getCards(), handValue);
+		setMainCards(pair, hand.getCards(), handValue);
 
 		// Set Kicker
 		setKicker(hand, handValue);
 
-		handValue.setHandRank(HandRank.TWO_PAIR);
+		handValue.setHandRank(HandRank.PAIR);
 
 		return handValue;
-	}
-
-	private void setMainCards(Rank firstRank, Rank secondRank, List<Card> cards, HandValue handValue)
-			throws HandRankException {
-
-		List<Card> firstPairs = HandUtility.getCardsByRank(firstRank, cards);
-
-		if (firstPairs.size() != 2) {
-			throw new HandRankException("Pair not found: " + firstRank);
-		}
-
-		List<Card> secondPairs = HandUtility.getCardsByRank(secondRank, cards);
-
-		if (secondPairs.size() != 2) {
-			throw new HandRankException("Pair not found: " + secondRank);
-		}
-
-		firstPairs.addAll(secondPairs);
-
-		handValue.setMainCards(new ArrayList<>(firstPairs));
 
 	}
 
 	private void setKicker(Hand hand, HandValue handValue) {
-
 		// Do not include main cards from hand;
-
 		List<Card> kickers = new ArrayList<>(hand.getCards());
 
 		kickers.removeAll(handValue.getMainCards());
 
 		Collections.sort(kickers);
 
-		kickers.subList(1, kickers.size()).clear();
+		kickers.subList(3, kickers.size()).clear();
 
 		handValue.setKickers(kickers);
+	}
+
+	private void setMainCards(Rank pair, List<Card> cards, HandValue handValue) throws HandRankException {
+
+		List<Card> pairs = HandUtility.getCardsByRank(pair, cards);
+
+		if (pairs.size() != 2) {
+			throw new HandRankException("Pair not found: " + pair);
+		}
+
+		handValue.setMainCards(new ArrayList<>(pairs));
 
 	}
 

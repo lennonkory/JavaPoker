@@ -5,6 +5,7 @@ import static org.junit.Assert.assertTrue;
 
 import java.util.List;
 
+import org.junit.Before;
 import org.junit.Test;
 
 import kcomp.poker.commonpoker.creators.HandCreator;
@@ -16,9 +17,12 @@ import kcomp.poker.commonpoker.models.Card;
 import kcomp.poker.commonpoker.models.Hand;
 import kcomp.poker.commonpoker.models.HandValue;
 
-public class TestTwoPairRanker {
+public class TestTwoPairRanker extends BaseTestRanker {
 
-	TwoPairRanker ranker = new TwoPairRanker();
+	@Before
+	public void init() {
+		ranker = new TwoPairRanker();
+	}
 
 	@Test
 	public void test_happy_path_vaild_hand_with_two_pair() throws HandRankException {
@@ -28,6 +32,17 @@ public class TestTwoPairRanker {
 		HandValue handValue = ranker.getHandValue(hand);
 
 		assertTrue(handValue.getHandRank().equals(HandRank.TWO_PAIR));
+
+	}
+
+	@Test
+	public void test_happy_path_vaild_hand_with_pair_should_return_high_card() throws HandRankException {
+
+		Hand hand = HandCreator.createPairHand();
+
+		HandValue handValue = ranker.getHandValue(hand);
+
+		assertTrue(handValue.getHandRank().equals(HandRank.HIGH_CARD));
 
 	}
 
@@ -89,12 +104,46 @@ public class TestTwoPairRanker {
 	}
 
 	@Test
-	public void test__valid_not_two_pair() throws HandRankException {
+	public void test_kicker_is_of_size_1_5_card_hand() throws HandRankException {
 
-		Hand hand = HandCreator.createHighCardHand();
+		Hand hand = HandCreator.createTwoPairHand();
+
 		HandValue handValue = ranker.getHandValue(hand);
 
-		assertTrue(handValue.getHandRank().equals(HandRank.HIGH_CARD));
+		assertTrue(handValue.getHandRank().equals(HandRank.TWO_PAIR));
+
+		List<Card> kickers = handValue.getKickers();
+
+		assertEquals(1, kickers.size());
+
+	}
+
+	@Test
+	public void test_kicker_is_of_size_1_7_card_hand() throws HandRankException {
+
+		Rank firstPair = Rank.EIGHT;
+		Rank secondPair = Rank.FOUR;
+		Rank kicker = Rank.ACE;
+
+		Hand hand = HandCreator.createTwoPairHand(firstPair, secondPair, kicker);
+
+		hand.addCard(new Card(Suit.SPADES, Rank.JACK));
+		hand.addCard(new Card(Suit.SPADES, Rank.TEN));
+
+		HandValue handValue = ranker.getHandValue(hand);
+
+		assertTrue(handValue.getHandRank().equals(HandRank.TWO_PAIR));
+
+		List<Card> kickers = handValue.getKickers();
+
+		assertEquals(1, kickers.size());
+
+	}
+
+	@Test
+	public void test__valid_not_two_pair() throws HandRankException {
+
+		test_valid_not_rank_should_return_high_card();
 
 	}
 
