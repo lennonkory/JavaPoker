@@ -55,13 +55,11 @@ public class StraightRanker implements HandRanker {
 
 		if (count != 5) {
 			HandValue handValue = new HighCardHandValue();
-			handValue.setHandRank(HandRank.HIGH_CARD);
+
 			return handValue;
 		}
 
 		HandValue handValue = new StraightHandValue();
-
-		handValue.setHandRank(HandRank.STRAIGHT);
 
 		setMainCards(startRank, hand.getCards(), handValue);
 
@@ -91,7 +89,7 @@ public class StraightRanker implements HandRanker {
 			if (rank.equals(start)) {
 				add = true;
 			}
-			if (add) {
+			if (add && !isCardInMain(rank, main)) {
 				main.add(card);
 				count++;
 			}
@@ -115,6 +113,16 @@ public class StraightRanker implements HandRanker {
 
 		handValue.setMainCards(main);
 
+	}
+
+	private boolean isCardInMain(Rank rank, List<Card> cards) {
+		for (Card card : cards) {
+			Rank checkRank = card.getRank();
+			if (checkRank.equals(rank)) {
+				return true;
+			}
+		}
+		return false;
 	}
 
 	@Override

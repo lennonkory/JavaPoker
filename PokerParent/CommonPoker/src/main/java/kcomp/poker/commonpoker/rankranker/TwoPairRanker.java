@@ -42,7 +42,6 @@ public class TwoPairRanker implements HandRanker {
 
 		if (firstPair == null || secondPair == null) {
 			HandValue handValue = new HighCardHandValue();
-			handValue.setHandRank(HandRank.HIGH_CARD);
 			return handValue;
 		}
 
@@ -53,8 +52,6 @@ public class TwoPairRanker implements HandRanker {
 
 		// Set Kicker
 		setKicker(hand, handValue);
-
-		handValue.setHandRank(HandRank.TWO_PAIR);
 
 		return handValue;
 	}

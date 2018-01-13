@@ -33,13 +33,11 @@ public class FlushRanker implements HandRanker {
 
 		if (flush == null) {
 			HandValue handValue = new HighCardHandValue();
-			handValue.setHandRank(HandRank.HIGH_CARD);
+
 			return handValue;
 		}
 
 		HandValue handValue = new FlushHandValue();
-
-		handValue.setHandRank(HandRank.FLUSH);
 
 		setMains(flush, hand.getCards(), handValue);
 

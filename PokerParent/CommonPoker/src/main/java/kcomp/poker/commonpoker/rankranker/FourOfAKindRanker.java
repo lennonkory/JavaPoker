@@ -36,7 +36,6 @@ public class FourOfAKindRanker implements HandRanker {
 
 		if (pair == null) {
 			HandValue handValue = new HighCardHandValue();
-			handValue.setHandRank(HandRank.HIGH_CARD);
 			return handValue;
 		}
 
@@ -47,8 +46,6 @@ public class FourOfAKindRanker implements HandRanker {
 
 		// Set Kicker
 		setKicker(hand, handValue);
-
-		handValue.setHandRank(HandRank.FOUR_OF_A_KIND);
 
 		return handValue;
 

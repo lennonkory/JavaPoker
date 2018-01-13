@@ -1,15 +1,19 @@
 package kcomp.poker.commonpoker.ai;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.junit.Before;
 import org.junit.Test;
 
-import kcomp.poker.commonpoker.creators.HandCreator;
+import kcomp.poker.commonpoker.enums.Rank;
+import kcomp.poker.commonpoker.enums.Suit;
 import kcomp.poker.commonpoker.exceptions.DeckException;
 import kcomp.poker.commonpoker.exceptions.HandRankException;
+import kcomp.poker.commonpoker.factory.HandFactory;
 import kcomp.poker.commonpoker.factory.RankHandFactory;
-import kcomp.poker.commonpoker.models.Deck;
+import kcomp.poker.commonpoker.models.Card;
 import kcomp.poker.commonpoker.models.Hand;
-import kcomp.poker.commonpoker.models.StandardDeck;
 import kcomp.poker.commonpoker.rankranker.RankHand;
 
 public class TestHandStrengthService {
@@ -24,19 +28,89 @@ public class TestHandStrengthService {
 
 	}
 
+	private List<Card> createCards() {
+		List<Card> cards = new ArrayList<>();
+
+		cards.add(new Card(Suit.HEARTS, Rank.THREE));
+		cards.add(new Card(Suit.CLUBS, Rank.FOUR));
+		cards.add(new Card(Suit.HEARTS, Rank.JACK));
+
+		return cards;
+	}
+
 	@Test
-	public void test() throws HandRankException, DeckException {
+	public void testHandStr() throws HandRankException, DeckException {
 
-		Hand hand = HandCreator.createPairHand();
+		Hand hand = HandFactory.createHand();
 
-		Deck deck = new StandardDeck();
-		deck.removeCards(hand.getCards());
+		hand.addFaceDown(new Card(Suit.DIAMONDS, Rank.ACE));
+		hand.addFaceDown(new Card(Suit.CLUBS, Rank.QUEEN));
 
-		hand.addFaceUp(deck.getNextCard());
-		hand.addFaceUp(deck.getNextCard());
+		List<Card> board = createCards();
 
-		handStrengthService.calculateHandStrength(hand);
+		hand.addFaceUp(board);
+
+		handStrengthService.calculateHandStrength(hand, board);
 
 	}
 
+	@Test
+	public void testHP() throws HandRankException, DeckException {
+
+		Hand hand = HandFactory.createHand();
+
+		hand.addFaceDown(new Card(Suit.CLUBS, Rank.ACE));
+		hand.addFaceDown(new Card(Suit.SPADES, Rank.FOUR));
+
+		List<Card> board = createCards();
+
+		hand.addFaceUp(board);
+
+		handStrengthService.calculateHandPotential(hand, board);
+
+	}
+
+	@Test
+	public void testEHS3ofaKind() throws HandRankException, DeckException {
+
+		Hand hand = HandFactory.createHand();
+
+		hand.addFaceDown(new Card(Suit.CLUBS, Rank.ACE));
+		hand.addFaceDown(new Card(Suit.SPADES, Rank.ACE));
+
+		List<Card> board = createCards();
+
+		hand.addFaceUp(board);
+
+		double hs = handStrengthService.calculateHandStrength(hand, board);
+		HandPotential hp = handStrengthService.calculateHandPotential(hand, board);
+
+		double ehs = hs * (1 - hp.getNegPotential()) + (1 - hs) * hp.posPotential;
+
+		System.out.println("EHS: " + ehs);
+
+	}
+
+	@Test
+	public void testEHSHighCard_low() throws HandRankException, DeckException {
+
+		Hand hand = HandFactory.createHand();
+
+		// A♦-Q♣ / 3♥-4♣-J♥
+
+		hand.addFaceDown(new Card(Suit.DIAMONDS, Rank.ACE));
+		hand.addFaceDown(new Card(Suit.CLUBS, Rank.QUEEN));
+
+		List<Card> board = createCards();
+
+		hand.addFaceUp(board);
+
+		double hs = handStrengthService.calculateHandStrength(hand, board);
+		HandPotential hp = handStrengthService.calculateHandPotential(hand, board);
+
+		double ehs = (hs * (1 - hp.getNegPotential())) + ((1 - hs) * hp.posPotential);
+
+		System.out.println("EHS: " + ehs);
+
+	}
 }

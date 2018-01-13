@@ -5,6 +5,10 @@ import kcomp.poker.commonpoker.enums.HandRank;
 
 public class PairHandValue extends HandValue {
 
+	public PairHandValue() {
+		super(HandRank.PAIR);
+	}
+
 	@Override
 	public int compareTo(HandValue o) {
 

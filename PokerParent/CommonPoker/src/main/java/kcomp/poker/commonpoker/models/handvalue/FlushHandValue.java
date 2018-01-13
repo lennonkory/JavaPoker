@@ -5,6 +5,10 @@ import kcomp.poker.commonpoker.enums.HandRank;
 
 public class FlushHandValue extends HandValue {
 
+	public FlushHandValue() {
+		super(HandRank.FLUSH);
+	}
+
 	@Override
 	public int compareTo(HandValue o) {
 
@@ -12,7 +16,7 @@ public class FlushHandValue extends HandValue {
 		HandRank twoRank = o.getHandRank();
 
 		if (oneRank.equals(twoRank)) {
-			SimpleHandValueComparePoker.straights(this, o);
+			return SimpleHandValueComparePoker.straights(this, o);
 		}
 
 		return oneRank.getRank() > twoRank.getRank() ? 1 : -1;

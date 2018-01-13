@@ -61,6 +61,26 @@ public class Hand {
 
 	}
 
+	public void addFaceUp(List<Card> cards) {
+		for (Card card : cards) {
+			this.faceUp.add(card);
+			addCard(card);
+		}
+
+	}
+
+	public void removeCard(Card card) {
+		cards.remove(card);
+		faceDown.remove(card);
+		faceUp.remove(card);
+	}
+
+	public void removeCards(List<Card> cards) {
+		for (Card card : cards) {
+			removeCard(card);
+		}
+	}
+
 	public List<Card> getFaceDown() {
 		return faceDown;
 	}

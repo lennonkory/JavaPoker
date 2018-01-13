@@ -8,7 +8,6 @@ import java.util.List;
 import org.junit.Before;
 import org.junit.Test;
 
-import kcomp.poker.commonpoker.enums.HandRank;
 import kcomp.poker.commonpoker.enums.Rank;
 import kcomp.poker.commonpoker.enums.Suit;
 import kcomp.poker.commonpoker.models.Card;
@@ -20,7 +19,6 @@ public class TestThreeOfAKindHandValue {
 	@Before
 	public void init() {
 		handValue = new ThreeOfAKindHandValue();
-		handValue.setHandRank(HandRank.THREE_OF_A_KIND);
 	}
 
 	@Test
@@ -61,8 +59,7 @@ public class TestThreeOfAKindHandValue {
 		handValue.setMainCards(mainCards);
 		handValue.setKickers(kickers);
 
-		HandValue opHandValue = new HighCardHandValue();
-		opHandValue.setHandRank(HandRank.THREE_OF_A_KIND);
+		HandValue opHandValue = new ThreeOfAKindHandValue();
 
 		List<Card> opMainCards = new ArrayList<>();
 		List<Card> opKickers = new ArrayList<>();
@@ -99,8 +96,7 @@ public class TestThreeOfAKindHandValue {
 		handValue.setMainCards(mainCards);
 		handValue.setKickers(kickers);
 
-		HandValue opHandValue = new HighCardHandValue();
-		opHandValue.setHandRank(HandRank.THREE_OF_A_KIND);
+		HandValue opHandValue = new ThreeOfAKindHandValue();
 
 		List<Card> opMainCards = new ArrayList<>();
 		List<Card> opKickers = new ArrayList<>();
@@ -137,8 +133,7 @@ public class TestThreeOfAKindHandValue {
 		handValue.setMainCards(mainCards);
 		handValue.setKickers(kickers);
 
-		HandValue opHandValue = new HighCardHandValue();
-		opHandValue.setHandRank(HandRank.THREE_OF_A_KIND);
+		HandValue opHandValue = new ThreeOfAKindHandValue();
 
 		List<Card> opMainCards = new ArrayList<>();
 		List<Card> opKickers = new ArrayList<>();
@@ -175,8 +170,7 @@ public class TestThreeOfAKindHandValue {
 		handValue.setMainCards(mainCards);
 		handValue.setKickers(kickers);
 
-		HandValue opHandValue = new HighCardHandValue();
-		opHandValue.setHandRank(HandRank.THREE_OF_A_KIND);
+		HandValue opHandValue = new ThreeOfAKindHandValue();
 
 		List<Card> opMainCards = new ArrayList<>();
 		List<Card> opKickers = new ArrayList<>();
@@ -201,7 +195,6 @@ public class TestThreeOfAKindHandValue {
 	public void aceShouldBeatHighCard() {
 
 		HandValue opHandValue = new HighCardHandValue();
-		opHandValue.setHandRank(HandRank.HIGH_CARD);
 
 		int compare = handValue.compareTo(opHandValue);
 
@@ -212,8 +205,7 @@ public class TestThreeOfAKindHandValue {
 	@Test
 	public void aceShouldBeatPair() {
 
-		HandValue opHandValue = new HighCardHandValue();
-		opHandValue.setHandRank(HandRank.PAIR);
+		HandValue opHandValue = new PairHandValue();
 
 		int compare = handValue.compareTo(opHandValue);
 
@@ -224,8 +216,7 @@ public class TestThreeOfAKindHandValue {
 	@Test
 	public void aceShouldBeatTwoPair() {
 
-		HandValue opHandValue = new HighCardHandValue();
-		opHandValue.setHandRank(HandRank.TWO_PAIR);
+		HandValue opHandValue = new TwoPairHandValue();
 
 		int compare = handValue.compareTo(opHandValue);
 
@@ -237,7 +228,6 @@ public class TestThreeOfAKindHandValue {
 	public void aceShouldLoseStraight() {
 
 		HandValue opHandValue = new StraightHandValue();
-		opHandValue.setHandRank(HandRank.STRAIGHT);
 
 		int compare = handValue.compareTo(opHandValue);
 
@@ -249,7 +239,6 @@ public class TestThreeOfAKindHandValue {
 	public void aceShouldLoseFlush() {
 
 		HandValue opHandValue = new FlushHandValue();
-		opHandValue.setHandRank(HandRank.FLUSH);
 
 		int compare = handValue.compareTo(opHandValue);
 
@@ -261,7 +250,6 @@ public class TestThreeOfAKindHandValue {
 	public void aceShouldLoseFullHouses() {
 
 		HandValue opHandValue = new FullHouseHandValue();
-		opHandValue.setHandRank(HandRank.FULL_HOUSE);
 
 		int compare = handValue.compareTo(opHandValue);
 
@@ -273,7 +261,6 @@ public class TestThreeOfAKindHandValue {
 	public void aceShouldLoseFourKind() {
 
 		HandValue opHandValue = new FourOfAKindHandValue();
-		opHandValue.setHandRank(HandRank.FOUR_OF_A_KIND);
 
 		int compare = handValue.compareTo(opHandValue);
 
@@ -285,7 +272,6 @@ public class TestThreeOfAKindHandValue {
 	public void aceShouldLoseStraightFlush() {
 
 		HandValue opHandValue = new StraightFlushHandValue();
-		opHandValue.setHandRank(HandRank.STRAIGHT_FLUSH);
 
 		int compare = handValue.compareTo(opHandValue);
 

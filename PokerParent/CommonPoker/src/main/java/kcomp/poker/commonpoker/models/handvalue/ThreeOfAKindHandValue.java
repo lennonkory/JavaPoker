@@ -5,6 +5,10 @@ import kcomp.poker.commonpoker.enums.HandRank;
 
 public class ThreeOfAKindHandValue extends HandValue {
 
+	public ThreeOfAKindHandValue() {
+		super(HandRank.THREE_OF_A_KIND);
+	}
+
 	@Override
 	public int compareTo(HandValue o) {
 

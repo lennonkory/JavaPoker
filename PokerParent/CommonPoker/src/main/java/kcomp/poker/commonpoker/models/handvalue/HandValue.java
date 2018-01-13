@@ -15,12 +15,12 @@ public abstract class HandValue implements Comparable<HandValue> {
 		this.handRank = HandRank.HIGH_CARD;
 	}
 
-	public HandRank getHandRank() {
-		return handRank;
+	public HandValue(HandRank handRank) {
+		this.handRank = handRank;
 	}
 
-	public void setHandRank(HandRank handRank) {
-		this.handRank = handRank;
+	public HandRank getHandRank() {
+		return handRank;
 	}
 
 	public List<Card> getMainCards() {

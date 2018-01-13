@@ -8,7 +8,6 @@ import java.util.List;
 import org.junit.Before;
 import org.junit.Test;
 
-import kcomp.poker.commonpoker.enums.HandRank;
 import kcomp.poker.commonpoker.enums.Rank;
 import kcomp.poker.commonpoker.enums.Suit;
 import kcomp.poker.commonpoker.models.Card;
@@ -20,7 +19,6 @@ public class TestPairHandValue {
 	@Before
 	public void init() {
 		handValue = new PairHandValue();
-		handValue.setHandRank(HandRank.PAIR);
 	}
 
 	@Test
@@ -49,8 +47,7 @@ public class TestPairHandValue {
 
 		handValue.setMainCards(mainCards);
 
-		HandValue opHandValue = new HighCardHandValue();
-		opHandValue.setHandRank(HandRank.PAIR);
+		HandValue opHandValue = new PairHandValue();
 
 		List<Card> opMainCards = new ArrayList<>();
 
@@ -77,8 +74,7 @@ public class TestPairHandValue {
 
 		handValue.setMainCards(mainCards);
 
-		HandValue opHandValue = new HighCardHandValue();
-		opHandValue.setHandRank(HandRank.PAIR);
+		HandValue opHandValue = new PairHandValue();
 
 		List<Card> opMainCards = new ArrayList<>();
 
@@ -108,8 +104,7 @@ public class TestPairHandValue {
 
 		handValue.setMainCards(mainCards);
 
-		HandValue opHandValue = new HighCardHandValue();
-		opHandValue.setHandRank(HandRank.PAIR);
+		HandValue opHandValue = new PairHandValue();
 
 		List<Card> opMainCards = new ArrayList<>();
 
@@ -136,8 +131,7 @@ public class TestPairHandValue {
 
 		handValue.setMainCards(mainCards);
 
-		HandValue opHandValue = new HighCardHandValue();
-		opHandValue.setHandRank(HandRank.PAIR);
+		HandValue opHandValue = new PairHandValue();
 
 		List<Card> opMainCards = new ArrayList<>();
 
@@ -167,8 +161,7 @@ public class TestPairHandValue {
 		handValue.setMainCards(mainCards);
 		handValue.setKickers(kickers);
 
-		HandValue opHandValue = new HighCardHandValue();
-		opHandValue.setHandRank(HandRank.PAIR);
+		HandValue opHandValue = new PairHandValue();
 
 		List<Card> opMainCards = new ArrayList<>();
 		List<Card> opKickers = new ArrayList<>();
@@ -203,8 +196,7 @@ public class TestPairHandValue {
 		handValue.setMainCards(mainCards);
 		handValue.setKickers(kickers);
 
-		HandValue opHandValue = new HighCardHandValue();
-		opHandValue.setHandRank(HandRank.PAIR);
+		HandValue opHandValue = new PairHandValue();
 
 		List<Card> opMainCards = new ArrayList<>();
 		List<Card> opKickers = new ArrayList<>();
@@ -225,10 +217,9 @@ public class TestPairHandValue {
 	}
 
 	@Test
-	public void aceShouldBeatHighCard_2Cards() {
+	public void aceShouldBeatHighCard() {
 
 		HandValue opHandValue = new HighCardHandValue();
-		opHandValue.setHandRank(HandRank.HIGH_CARD);
 
 		int compare = handValue.compareTo(opHandValue);
 
@@ -237,22 +228,9 @@ public class TestPairHandValue {
 	}
 
 	@Test
-	public void aceShouldLoseTwoPair_2Cards() {
+	public void aceShouldLoseTwoPair() {
 
-		HandValue opHandValue = new HighCardHandValue();
-		opHandValue.setHandRank(HandRank.TWO_PAIR);
-
-		int compare = handValue.compareTo(opHandValue);
-
-		assertEquals(-1, compare);
-
-	}
-
-	@Test
-	public void aceShouldLose3Kind_2Cards() {
-
-		HandValue opHandValue = new HighCardHandValue();
-		opHandValue.setHandRank(HandRank.THREE_OF_A_KIND);
+		HandValue opHandValue = new TwoPairHandValue();
 
 		int compare = handValue.compareTo(opHandValue);
 
@@ -261,10 +239,9 @@ public class TestPairHandValue {
 	}
 
 	@Test
-	public void aceShouldLoseStraight_2Cards() {
+	public void aceShouldLose3Kind() {
 
-		HandValue opHandValue = new HighCardHandValue();
-		opHandValue.setHandRank(HandRank.STRAIGHT);
+		HandValue opHandValue = new ThreeOfAKindHandValue();
 
 		int compare = handValue.compareTo(opHandValue);
 
@@ -273,11 +250,20 @@ public class TestPairHandValue {
 	}
 
 	@Test
-	public void aceShouldLoseFlush_2Cards() {
+	public void aceShouldLoseStraight() {
 
-		HandValue opHandValue = new HighCardHandValue();
-		opHandValue.setHandRank(HandRank.FLUSH);
+		HandValue opHandValue = new StraightHandValue();
 
+		int compare = handValue.compareTo(opHandValue);
+
+		assertEquals(-1, compare);
+
+	}
+
+	@Test
+	public void aceShouldLoseFlush() {
+
+		HandValue opHandValue = new FlushHandValue();
 		int compare = handValue.compareTo(opHandValue);
 
 		assertEquals(-1, compare);
@@ -287,8 +273,7 @@ public class TestPairHandValue {
 	@Test
 	public void aceShouldLoseFullHouse_2Cards() {
 
-		HandValue opHandValue = new HighCardHandValue();
-		opHandValue.setHandRank(HandRank.FULL_HOUSE);
+		HandValue opHandValue = new FullHouseHandValue();
 
 		int compare = handValue.compareTo(opHandValue);
 
@@ -297,10 +282,9 @@ public class TestPairHandValue {
 	}
 
 	@Test
-	public void aceShouldLoseFourKind_2Cards() {
+	public void aceShouldLoseFourKind() {
 
-		HandValue opHandValue = new HighCardHandValue();
-		opHandValue.setHandRank(HandRank.FOUR_OF_A_KIND);
+		HandValue opHandValue = new FourOfAKindHandValue();
 
 		int compare = handValue.compareTo(opHandValue);
 
@@ -309,10 +293,9 @@ public class TestPairHandValue {
 	}
 
 	@Test
-	public void aceShouldLoseStraightFlush_2Cards() {
+	public void aceShouldLoseStraightFlush() {
 
-		HandValue opHandValue = new HighCardHandValue();
-		opHandValue.setHandRank(HandRank.STRAIGHT_FLUSH);
+		HandValue opHandValue = new StraightFlushHandValue();
 
 		int compare = handValue.compareTo(opHandValue);
 

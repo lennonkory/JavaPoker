@@ -5,6 +5,10 @@ import kcomp.poker.commonpoker.enums.HandRank;
 
 public class FullHouseHandValue extends HandValue {
 
+	public FullHouseHandValue() {
+		super(HandRank.FULL_HOUSE);
+	}
+
 	@Override
 	public int compareTo(HandValue o) {
 
@@ -12,7 +16,7 @@ public class FullHouseHandValue extends HandValue {
 		HandRank twoRank = o.getHandRank();
 
 		if (oneRank.equals(twoRank)) {
-			return SimpleHandValueComparePoker.fourFull(this, o);
+			return SimpleHandValueComparePoker.straights(this, o);
 		}
 
 		return oneRank.getRank() > twoRank.getRank() ? 1 : -1;

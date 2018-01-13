@@ -48,7 +48,6 @@ public class StraightFlushRanker implements HandRanker {
 		HandValue newHandValue = new StraightFlushHandValue();
 
 		newHandValue.setMainCards(handValue.getMainCards());
-		newHandValue.setHandRank(HandRank.STRAIGHT_FLUSH);
 
 		return newHandValue;
 

@@ -12,30 +12,27 @@ import kcomp.poker.commonpoker.enums.Rank;
 import kcomp.poker.commonpoker.enums.Suit;
 import kcomp.poker.commonpoker.models.Card;
 
-public class TestTwoPairHandValue {
+public class TestFlushHandValue {
 
-	private TwoPairHandValue handValue;
+	private FlushHandValue handValue;
 
 	@Before
 	public void init() {
-		handValue = new TwoPairHandValue();
+		handValue = new FlushHandValue();
 	}
 
 	@Test
 	public void compareSameHandReturnsEqual() {
 
 		List<Card> mainCards = new ArrayList<>();
-		List<Card> kickers = new ArrayList<>();
 
 		mainCards.add(new Card(Suit.CLUBS, Rank.ACE));
-		mainCards.add(new Card(Suit.SPADES, Rank.ACE));
-		mainCards.add(new Card(Suit.CLUBS, Rank.KING));
-		mainCards.add(new Card(Suit.SPADES, Rank.KING));
-
-		kickers.add(new Card(Suit.SPADES, Rank.EIGHT));
+		mainCards.add(new Card(Suit.CLUBS, Rank.QUEEN));
+		mainCards.add(new Card(Suit.CLUBS, Rank.TEN));
+		mainCards.add(new Card(Suit.CLUBS, Rank.EIGHT));
+		mainCards.add(new Card(Suit.CLUBS, Rank.FIVE));
 
 		handValue.setMainCards(mainCards);
-		handValue.setKickers(kickers);
 
 		int compare = handValue.compareTo(handValue);
 
@@ -44,35 +41,29 @@ public class TestTwoPairHandValue {
 	}
 
 	@Test
-	public void aceTwoPairShouldBeatKingTwoPair_5Cards() {
+	public void aceShouldBeatKing() {
 
 		List<Card> mainCards = new ArrayList<>();
-		List<Card> kickers = new ArrayList<>();
 
 		mainCards.add(new Card(Suit.CLUBS, Rank.ACE));
-		mainCards.add(new Card(Suit.SPADES, Rank.ACE));
-		mainCards.add(new Card(Suit.CLUBS, Rank.KING));
-		mainCards.add(new Card(Suit.SPADES, Rank.KING));
-
-		kickers.add(new Card(Suit.SPADES, Rank.EIGHT));
+		mainCards.add(new Card(Suit.CLUBS, Rank.QUEEN));
+		mainCards.add(new Card(Suit.CLUBS, Rank.TEN));
+		mainCards.add(new Card(Suit.CLUBS, Rank.EIGHT));
+		mainCards.add(new Card(Suit.CLUBS, Rank.FIVE));
 
 		handValue.setMainCards(mainCards);
-		handValue.setKickers(kickers);
 
-		HandValue opHandValue = new TwoPairHandValue();
+		HandValue opHandValue = new FlushHandValue();
 
 		List<Card> opMainCards = new ArrayList<>();
-		List<Card> opKickers = new ArrayList<>();
 
 		opMainCards.add(new Card(Suit.CLUBS, Rank.KING));
-		opMainCards.add(new Card(Suit.SPADES, Rank.KING));
 		opMainCards.add(new Card(Suit.CLUBS, Rank.QUEEN));
-		opMainCards.add(new Card(Suit.SPADES, Rank.QUEEN));
-
-		opKickers.add(new Card(Suit.SPADES, Rank.EIGHT));
+		opMainCards.add(new Card(Suit.CLUBS, Rank.TEN));
+		opMainCards.add(new Card(Suit.CLUBS, Rank.EIGHT));
+		opMainCards.add(new Card(Suit.CLUBS, Rank.FIVE));
 
 		opHandValue.setMainCards(opMainCards);
-		opHandValue.setKickers(opKickers);
 
 		int compare = handValue.compareTo(opHandValue);
 
@@ -81,34 +72,29 @@ public class TestTwoPairHandValue {
 	}
 
 	@Test
-	public void kingShouldLoseAcePair_5Cards() {
+	public void kingShouldLoseAce() {
 
 		List<Card> mainCards = new ArrayList<>();
-		List<Card> kickers = new ArrayList<>();
 
 		mainCards.add(new Card(Suit.CLUBS, Rank.KING));
-		mainCards.add(new Card(Suit.SPADES, Rank.KING));
 		mainCards.add(new Card(Suit.CLUBS, Rank.QUEEN));
-		mainCards.add(new Card(Suit.SPADES, Rank.QUEEN));
-
-		kickers.add(new Card(Suit.SPADES, Rank.EIGHT));
+		mainCards.add(new Card(Suit.CLUBS, Rank.TEN));
+		mainCards.add(new Card(Suit.CLUBS, Rank.EIGHT));
+		mainCards.add(new Card(Suit.CLUBS, Rank.FIVE));
 
 		handValue.setMainCards(mainCards);
-		handValue.setKickers(kickers);
-		HandValue opHandValue = new TwoPairHandValue();
+
+		HandValue opHandValue = new FlushHandValue();
 
 		List<Card> opMainCards = new ArrayList<>();
-		List<Card> opKickers = new ArrayList<>();
 
 		opMainCards.add(new Card(Suit.CLUBS, Rank.ACE));
-		opMainCards.add(new Card(Suit.SPADES, Rank.ACE));
 		opMainCards.add(new Card(Suit.CLUBS, Rank.QUEEN));
-		opMainCards.add(new Card(Suit.SPADES, Rank.QUEEN));
-
-		opKickers.add(new Card(Suit.SPADES, Rank.EIGHT));
+		opMainCards.add(new Card(Suit.CLUBS, Rank.TEN));
+		opMainCards.add(new Card(Suit.CLUBS, Rank.EIGHT));
+		opMainCards.add(new Card(Suit.CLUBS, Rank.FIVE));
 
 		opHandValue.setMainCards(opMainCards);
-		opHandValue.setKickers(opKickers);
 
 		int compare = handValue.compareTo(opHandValue);
 
@@ -117,34 +103,29 @@ public class TestTwoPairHandValue {
 	}
 
 	@Test
-	public void aceShouldBeatAceHighHigherLastCard_5Cards() {
+	public void aceShouldBeatAceHighHigherKickerCard() {
 
 		List<Card> mainCards = new ArrayList<>();
-		List<Card> kickers = new ArrayList<>();
 
 		mainCards.add(new Card(Suit.CLUBS, Rank.ACE));
-		mainCards.add(new Card(Suit.SPADES, Rank.ACE));
-		kickers.add(new Card(Suit.HEARTS, Rank.KING));
-		kickers.add(new Card(Suit.CLUBS, Rank.KING));
-		kickers.add(new Card(Suit.DIAMONDS, Rank.QUEEN));
+		mainCards.add(new Card(Suit.CLUBS, Rank.QUEEN));
+		mainCards.add(new Card(Suit.CLUBS, Rank.TEN));
+		mainCards.add(new Card(Suit.CLUBS, Rank.EIGHT));
+		mainCards.add(new Card(Suit.CLUBS, Rank.FIVE));
 
 		handValue.setMainCards(mainCards);
-		handValue.setKickers(kickers);
 
-		HandValue opHandValue = new TwoPairHandValue();
+		HandValue opHandValue = new FlushHandValue();
 
 		List<Card> opMainCards = new ArrayList<>();
-		List<Card> opKickers = new ArrayList<>();
 
-		opMainCards.add(new Card(Suit.CLUBS, Rank.KING));
-		opMainCards.add(new Card(Suit.SPADES, Rank.KING));
+		opMainCards.add(new Card(Suit.CLUBS, Rank.ACE));
 		opMainCards.add(new Card(Suit.CLUBS, Rank.QUEEN));
-		opMainCards.add(new Card(Suit.SPADES, Rank.QUEEN));
-
-		opKickers.add(new Card(Suit.SPADES, Rank.EIGHT));
+		opMainCards.add(new Card(Suit.CLUBS, Rank.NINE));
+		opMainCards.add(new Card(Suit.CLUBS, Rank.EIGHT));
+		opMainCards.add(new Card(Suit.CLUBS, Rank.FIVE));
 
 		opHandValue.setMainCards(opMainCards);
-		opHandValue.setKickers(opKickers);
 
 		int compare = handValue.compareTo(opHandValue);
 
@@ -164,35 +145,35 @@ public class TestTwoPairHandValue {
 	}
 
 	@Test
-	public void aceShouldLose3Kind() {
+	public void aceShouldBeatPair() {
 
-		HandValue opHandValue = new ThreeOfAKindHandValue();
+		HandValue opHandValue = new PairHandValue();
 
 		int compare = handValue.compareTo(opHandValue);
 
-		assertEquals(-1, compare);
+		assertEquals(1, compare);
 
 	}
 
 	@Test
-	public void aceShouldLoseStraight() {
+	public void aceShouldBeatTwoPair() {
+
+		HandValue opHandValue = new TwoPairHandValue();
+
+		int compare = handValue.compareTo(opHandValue);
+
+		assertEquals(1, compare);
+
+	}
+
+	@Test
+	public void aceShouldBeatStraight() {
 
 		HandValue opHandValue = new StraightHandValue();
 
 		int compare = handValue.compareTo(opHandValue);
 
-		assertEquals(-1, compare);
-
-	}
-
-	@Test
-	public void aceShouldLoseFlush() {
-
-		HandValue opHandValue = new FlushHandValue();
-
-		int compare = handValue.compareTo(opHandValue);
-
-		assertEquals(-1, compare);
+		assertEquals(1, compare);
 
 	}
 

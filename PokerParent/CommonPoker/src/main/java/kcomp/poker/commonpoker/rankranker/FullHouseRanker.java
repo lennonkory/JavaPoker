@@ -43,13 +43,11 @@ public class FullHouseRanker implements HandRanker {
 
 		if (three == null || two == null) {
 			HandValue handValue = new HighCardHandValue();
-			handValue.setHandRank(HandRank.HIGH_CARD);
+
 			return handValue;
 		}
 
 		HandValue handValue = new FullHouseHandValue();
-
-		handValue.setHandRank(HandRank.FULL_HOUSE);
 
 		setMains(three, two, hand.getCards(), handValue);
 

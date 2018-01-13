@@ -11,6 +11,7 @@ import kcomp.poker.commonpoker.exceptions.HandRankException;
 import kcomp.poker.commonpoker.models.Card;
 import kcomp.poker.commonpoker.models.Hand;
 import kcomp.poker.commonpoker.models.handvalue.HandValue;
+import kcomp.poker.commonpoker.models.handvalue.HighCardHandValue;
 import kcomp.poker.commonpoker.models.handvalue.PairHandValue;
 import kcomp.poker.commonpoker.utilities.HandUtility;
 
@@ -18,8 +19,6 @@ public class PairRanker implements HandRanker {
 
 	@Override
 	public HandValue getHandValue(Hand hand) throws HandRankException {
-
-		HandValue handValue = new PairHandValue();
 
 		Map<Rank, Integer> ranks = hand.getRanks();
 
@@ -36,9 +35,11 @@ public class PairRanker implements HandRanker {
 		}
 
 		if (pair == null) {
-			handValue.setHandRank(HandRank.HIGH_CARD);
+			HandValue handValue = new HighCardHandValue();
 			return handValue;
 		}
+
+		HandValue handValue = new PairHandValue();
 
 		// Set main cards
 		setMainCards(pair, hand.getCards(), handValue);
@@ -46,21 +47,26 @@ public class PairRanker implements HandRanker {
 		// Set Kicker
 		setKicker(hand, handValue);
 
-		handValue.setHandRank(HandRank.PAIR);
-
 		return handValue;
 
 	}
 
 	private void setKicker(Hand hand, HandValue handValue) {
 		// Do not include main cards from hand;
-		List<Card> kickers = new ArrayList<>(hand.getCards());
+		List<Card> tempKickers = new ArrayList<>(hand.getCards());
 
-		kickers.removeAll(handValue.getMainCards());
+		tempKickers.removeAll(handValue.getMainCards());
 
-		Collections.sort(kickers);
+		Collections.sort(tempKickers);
+		Collections.reverse(tempKickers);
 
-		kickers.subList(3, kickers.size()).clear();
+		int number = tempKickers.size() > 3 ? 3 : tempKickers.size();
+
+		List<Card> kickers = new ArrayList<>();
+
+		for (int i = 0; i < number; i++) {
+			kickers.add(tempKickers.get(i));
+		}
 
 		handValue.setKickers(kickers);
 	}

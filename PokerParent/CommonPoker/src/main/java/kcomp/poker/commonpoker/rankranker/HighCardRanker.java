@@ -21,9 +21,7 @@ public class HighCardRanker implements HandRanker {
 		Collections.sort(cards);
 		Collections.reverse(cards);
 
-		cards = cards.subList(0, 5);
-
-		handValue.setHandRank(HandRank.HIGH_CARD);
+		cards = cards.subList(0, cards.size() > 5 ? 5 : cards.size());
 
 		handValue.setMainCards(cards);
 

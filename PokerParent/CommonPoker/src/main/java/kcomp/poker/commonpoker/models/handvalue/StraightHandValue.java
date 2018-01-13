@@ -5,6 +5,10 @@ import kcomp.poker.commonpoker.enums.HandRank;
 
 public class StraightHandValue extends HandValue {
 
+	public StraightHandValue() {
+		super(HandRank.STRAIGHT);
+	}
+
 	@Override
 	public int compareTo(HandValue o) {
 

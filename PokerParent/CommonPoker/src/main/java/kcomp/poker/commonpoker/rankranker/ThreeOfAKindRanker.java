@@ -36,7 +36,7 @@ public class ThreeOfAKindRanker implements HandRanker {
 
 		if (pair == null) {
 			HandValue handValue = new HighCardHandValue();
-			handValue.setHandRank(HandRank.HIGH_CARD);
+
 			return handValue;
 		}
 
@@ -47,8 +47,6 @@ public class ThreeOfAKindRanker implements HandRanker {
 
 		// Set Kicker
 		setKicker(hand, handValue);
-
-		handValue.setHandRank(HandRank.THREE_OF_A_KIND);
 
 		return handValue;
 
