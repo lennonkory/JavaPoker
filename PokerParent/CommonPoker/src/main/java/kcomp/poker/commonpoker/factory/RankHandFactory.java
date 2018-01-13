@@ -3,6 +3,7 @@ package kcomp.poker.commonpoker.factory;
 import kcomp.poker.commonpoker.rankranker.FlushRanker;
 import kcomp.poker.commonpoker.rankranker.FourOfAKindRanker;
 import kcomp.poker.commonpoker.rankranker.FullHouseRanker;
+import kcomp.poker.commonpoker.rankranker.HighCardRanker;
 import kcomp.poker.commonpoker.rankranker.PairRanker;
 import kcomp.poker.commonpoker.rankranker.RankHand;
 import kcomp.poker.commonpoker.rankranker.StraightFlushRanker;
@@ -22,6 +23,7 @@ public class RankHandFactory {
 		rankHand.addHandRanker(new ThreeOfAKindRanker());
 		rankHand.addHandRanker(new TwoPairRanker());
 		rankHand.addHandRanker(new PairRanker());
+		rankHand.addHandRanker(new HighCardRanker());
 		return rankHand;
 	}
 

@@ -11,7 +11,7 @@ import kcomp.poker.commonpoker.enums.Rank;
 import kcomp.poker.commonpoker.enums.Suit;
 import kcomp.poker.commonpoker.exceptions.HandRankException;
 import kcomp.poker.commonpoker.models.Hand;
-import kcomp.poker.commonpoker.models.HandValue;
+import kcomp.poker.commonpoker.models.handvalue.HandValue;
 
 public class TestRankHand {
 

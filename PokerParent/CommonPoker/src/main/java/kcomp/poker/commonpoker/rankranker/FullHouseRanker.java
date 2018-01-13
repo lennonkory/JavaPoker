@@ -9,15 +9,14 @@ import kcomp.poker.commonpoker.enums.Rank;
 import kcomp.poker.commonpoker.exceptions.HandRankException;
 import kcomp.poker.commonpoker.models.Card;
 import kcomp.poker.commonpoker.models.Hand;
-import kcomp.poker.commonpoker.models.HandValue;
-import kcomp.poker.commonpoker.utilities.SimpleHandValueComparePoker;
+import kcomp.poker.commonpoker.models.handvalue.FullHouseHandValue;
+import kcomp.poker.commonpoker.models.handvalue.HandValue;
+import kcomp.poker.commonpoker.models.handvalue.HighCardHandValue;
 
 public class FullHouseRanker implements HandRanker {
 
 	@Override
 	public HandValue getHandValue(Hand hand) throws HandRankException {
-
-		HandValue handValue = new HandValue();
 
 		Map<Rank, Integer> ranks = hand.getRanks();
 
@@ -43,9 +42,12 @@ public class FullHouseRanker implements HandRanker {
 		}
 
 		if (three == null || two == null) {
+			HandValue handValue = new HighCardHandValue();
 			handValue.setHandRank(HandRank.HIGH_CARD);
 			return handValue;
 		}
+
+		HandValue handValue = new FullHouseHandValue();
 
 		handValue.setHandRank(HandRank.FULL_HOUSE);
 
@@ -78,13 +80,6 @@ public class FullHouseRanker implements HandRanker {
 	@Override
 	public HandRank getHandRank() {
 		return HandRank.FULL_HOUSE;
-	}
-
-	@Override
-	public int compareHandValues(HandValue one, HandValue two) {
-
-		return SimpleHandValueComparePoker.fourFull(one, two);
-
 	}
 
 }

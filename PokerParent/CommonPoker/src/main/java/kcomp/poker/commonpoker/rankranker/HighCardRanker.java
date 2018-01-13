@@ -7,14 +7,14 @@ import kcomp.poker.commonpoker.enums.HandRank;
 import kcomp.poker.commonpoker.exceptions.HandRankException;
 import kcomp.poker.commonpoker.models.Card;
 import kcomp.poker.commonpoker.models.Hand;
-import kcomp.poker.commonpoker.models.HandValue;
-import kcomp.poker.commonpoker.utilities.SimpleHandValueComparePoker;
+import kcomp.poker.commonpoker.models.handvalue.HandValue;
+import kcomp.poker.commonpoker.models.handvalue.HighCardHandValue;
 
 public class HighCardRanker implements HandRanker {
 
 	@Override
 	public HandValue getHandValue(Hand hand) throws HandRankException {
-		HandValue handValue = new HandValue();
+		HandValue handValue = new HighCardHandValue();
 
 		List<Card> cards = hand.getCards();
 
@@ -32,12 +32,6 @@ public class HighCardRanker implements HandRanker {
 	@Override
 	public HandRank getHandRank() {
 		return HandRank.HIGH_CARD;
-	}
-
-	@Override
-	public int compareHandValues(HandValue one, HandValue two) {
-		return SimpleHandValueComparePoker.straights(one, two);
-
 	}
 
 }

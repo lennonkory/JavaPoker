@@ -3,7 +3,7 @@ package kcomp.poker.commonpoker.rankranker;
 import kcomp.poker.commonpoker.enums.HandRank;
 import kcomp.poker.commonpoker.exceptions.HandRankException;
 import kcomp.poker.commonpoker.models.Hand;
-import kcomp.poker.commonpoker.models.HandValue;
+import kcomp.poker.commonpoker.models.handvalue.HandValue;
 
 public interface HandRanker {
 
@@ -18,7 +18,5 @@ public interface HandRanker {
 	HandValue getHandValue(Hand hand) throws HandRankException;
 
 	HandRank getHandRank();
-
-	int compareHandValues(HandValue one, HandValue two);
 
 }

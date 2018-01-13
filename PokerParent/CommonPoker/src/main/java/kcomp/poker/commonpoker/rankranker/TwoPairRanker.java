@@ -10,16 +10,15 @@ import kcomp.poker.commonpoker.enums.Rank;
 import kcomp.poker.commonpoker.exceptions.HandRankException;
 import kcomp.poker.commonpoker.models.Card;
 import kcomp.poker.commonpoker.models.Hand;
-import kcomp.poker.commonpoker.models.HandValue;
+import kcomp.poker.commonpoker.models.handvalue.HandValue;
+import kcomp.poker.commonpoker.models.handvalue.HighCardHandValue;
+import kcomp.poker.commonpoker.models.handvalue.TwoPairHandValue;
 import kcomp.poker.commonpoker.utilities.HandUtility;
-import kcomp.poker.commonpoker.utilities.SimpleHandValueComparePoker;
 
 public class TwoPairRanker implements HandRanker {
 
 	@Override
 	public HandValue getHandValue(Hand hand) throws HandRankException {
-
-		HandValue handValue = new HandValue();
 
 		Map<Rank, Integer> ranks = hand.getRanks();
 
@@ -42,9 +41,12 @@ public class TwoPairRanker implements HandRanker {
 		}
 
 		if (firstPair == null || secondPair == null) {
+			HandValue handValue = new HighCardHandValue();
 			handValue.setHandRank(HandRank.HIGH_CARD);
 			return handValue;
 		}
+
+		HandValue handValue = new TwoPairHandValue();
 
 		// Set main cards
 		setMainCards(firstPair, secondPair, hand.getCards(), handValue);
@@ -99,9 +101,4 @@ public class TwoPairRanker implements HandRanker {
 		return HandRank.TWO_PAIR;
 	}
 
-	@Override
-	public int compareHandValues(HandValue one, HandValue two) {
-		return SimpleHandValueComparePoker.twoPair(one, two);
-
-	}
 }

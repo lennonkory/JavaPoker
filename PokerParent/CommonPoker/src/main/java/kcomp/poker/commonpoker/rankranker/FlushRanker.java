@@ -10,15 +10,14 @@ import kcomp.poker.commonpoker.enums.Suit;
 import kcomp.poker.commonpoker.exceptions.HandRankException;
 import kcomp.poker.commonpoker.models.Card;
 import kcomp.poker.commonpoker.models.Hand;
-import kcomp.poker.commonpoker.models.HandValue;
-import kcomp.poker.commonpoker.utilities.SimpleHandValueComparePoker;
+import kcomp.poker.commonpoker.models.handvalue.FlushHandValue;
+import kcomp.poker.commonpoker.models.handvalue.HandValue;
+import kcomp.poker.commonpoker.models.handvalue.HighCardHandValue;
 
 public class FlushRanker implements HandRanker {
 
 	@Override
 	public HandValue getHandValue(Hand hand) throws HandRankException {
-
-		HandValue handValue = new HandValue();
 
 		Map<Suit, Integer> suits = hand.getSuits();
 
@@ -33,9 +32,12 @@ public class FlushRanker implements HandRanker {
 		}
 
 		if (flush == null) {
+			HandValue handValue = new HighCardHandValue();
 			handValue.setHandRank(HandRank.HIGH_CARD);
 			return handValue;
 		}
+
+		HandValue handValue = new FlushHandValue();
 
 		handValue.setHandRank(HandRank.FLUSH);
 
@@ -68,12 +70,6 @@ public class FlushRanker implements HandRanker {
 	@Override
 	public HandRank getHandRank() {
 		return HandRank.FLUSH;
-	}
-
-	@Override
-	public int compareHandValues(HandValue one, HandValue two) {
-		return SimpleHandValueComparePoker.straights(one, two);
-
 	}
 
 }

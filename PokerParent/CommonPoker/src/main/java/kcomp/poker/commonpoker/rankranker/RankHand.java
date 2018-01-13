@@ -8,7 +8,7 @@ import java.util.Map;
 import kcomp.poker.commonpoker.enums.HandRank;
 import kcomp.poker.commonpoker.exceptions.HandRankException;
 import kcomp.poker.commonpoker.models.Hand;
-import kcomp.poker.commonpoker.models.HandValue;
+import kcomp.poker.commonpoker.models.handvalue.HandValue;
 
 public class RankHand {
 
@@ -22,7 +22,7 @@ public class RankHand {
 
 	public HandValue rankHand(Hand hand) throws HandRankException {
 
-		HandValue handValue;
+		HandValue handValue = null;
 
 		for (HandRank rank : handRankerOrder) {
 			HandRanker ranker = rankers.get(rank);
@@ -32,28 +32,7 @@ public class RankHand {
 			}
 		}
 
-		return new HandValue();
-	}
-
-	/**
-	 * Compares two hand values.
-	 * 
-	 * 1 means handvalue one is higher, -1 means handvalue two. 0 means the
-	 * same.
-	 */
-	public int compareHandValues(HandValue one, HandValue two) {
-
-		HandRank oneRank = one.getHandRank();
-		HandRank twoRank = two.getHandRank();
-
-		if (oneRank.getRank() != twoRank.getRank()) {
-			return oneRank.getRank() > twoRank.getRank() ? 1 : -1;
-		}
-
-		HandRanker ranker = rankers.get(oneRank);
-
-		return ranker.compareHandValues(one, two);
-
+		return handValue;
 	}
 
 	public void setHandRankers(Map<HandRank, HandRanker> handRankers) {

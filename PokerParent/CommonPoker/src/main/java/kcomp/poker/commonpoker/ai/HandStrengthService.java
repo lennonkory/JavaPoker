@@ -5,6 +5,6 @@ import kcomp.poker.commonpoker.models.Hand;
 
 public interface HandStrengthService {
 
-	int calculateHandStrength(Hand hand) throws HandRankException;
+	double calculateHandStrength(Hand hand) throws HandRankException;
 
 }

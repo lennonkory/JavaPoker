@@ -1,10 +1,11 @@
-package kcomp.poker.commonpoker.models;
+package kcomp.poker.commonpoker.models.handvalue;
 
 import java.util.List;
 
 import kcomp.poker.commonpoker.enums.HandRank;
+import kcomp.poker.commonpoker.models.Card;
 
-public class HandValue {
+public abstract class HandValue implements Comparable<HandValue> {
 
 	private HandRank handRank;
 	private List<Card> mainCards;

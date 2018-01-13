@@ -1,9 +1,23 @@
-package kcomp.poker.commonpoker.utilities;
+package kcomp.poker.commonpoker.comparehandValues;
 
+import kcomp.poker.commonpoker.enums.HandRank;
 import kcomp.poker.commonpoker.models.Card;
-import kcomp.poker.commonpoker.models.HandValue;
+import kcomp.poker.commonpoker.models.handvalue.HandValue;
 
 public class SimpleHandValueComparePoker {
+
+	public static int compare(HandValue one, HandValue two) {
+
+		HandRank oneRank = one.getHandRank();
+		HandRank twoRank = two.getHandRank();
+
+		if (oneRank.equals(twoRank)) {
+			return one.compareTo(two);
+		}
+
+		return oneRank.getRank() > twoRank.getRank() ? 1 : -1;
+
+	}
 
 	public static int fourFull(HandValue one, HandValue two) {
 
@@ -15,7 +29,10 @@ public class SimpleHandValueComparePoker {
 		if (compare == 0) {
 			Card oneKickerCard = one.getKickers().get(0);
 			Card twoKickerCard = two.getKickers().get(0);
-			return oneKickerCard.compareTo(twoKickerCard);
+			int value = oneKickerCard.compareTo(twoKickerCard);
+			if (value != 0) {
+				return value > 0 ? 1 : -1;
+			}
 		}
 
 		return compare;
@@ -30,7 +47,7 @@ public class SimpleHandValueComparePoker {
 			Card twoCard = two.getMainCards().get(i);
 			int compare = oneCard.compareTo(twoCard);
 			if (compare != 0) {
-				return compare;
+				return compare > 0 ? 1 : -1;
 			}
 		}
 
@@ -54,13 +71,13 @@ public class SimpleHandValueComparePoker {
 				Card twoKickerCard = two.getKickers().get(i);
 				int value = oneKickerCard.compareTo(twoKickerCard);
 				if (value != 0) {
-					return value;
+					return value > 0 ? 1 : -1;
 				}
 			}
 
 		}
 
-		return compare;
+		return compare > 0 ? 1 : -1;
 
 	}
 

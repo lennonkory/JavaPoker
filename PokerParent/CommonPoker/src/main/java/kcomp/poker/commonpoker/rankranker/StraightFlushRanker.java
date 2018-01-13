@@ -5,10 +5,10 @@ import kcomp.poker.commonpoker.enums.Suit;
 import kcomp.poker.commonpoker.exceptions.HandRankException;
 import kcomp.poker.commonpoker.models.Card;
 import kcomp.poker.commonpoker.models.Hand;
-import kcomp.poker.commonpoker.models.HandValue;
+import kcomp.poker.commonpoker.models.handvalue.HandValue;
+import kcomp.poker.commonpoker.models.handvalue.StraightFlushHandValue;
 import kcomp.poker.commonpoker.utilities.CreateHandMappings;
 import kcomp.poker.commonpoker.utilities.DefaultCreateHandMappings;
-import kcomp.poker.commonpoker.utilities.SimpleHandValueComparePoker;
 
 public class StraightFlushRanker implements HandRanker {
 
@@ -45,21 +45,18 @@ public class StraightFlushRanker implements HandRanker {
 			return handValue;
 		}
 
-		handValue.setHandRank(HandRank.STRAIGHT_FLUSH);
+		HandValue newHandValue = new StraightFlushHandValue();
 
-		return handValue;
+		newHandValue.setMainCards(handValue.getMainCards());
+		newHandValue.setHandRank(HandRank.STRAIGHT_FLUSH);
+
+		return newHandValue;
 
 	}
 
 	@Override
 	public HandRank getHandRank() {
 		return HandRank.STRAIGHT_FLUSH;
-	}
-
-	@Override
-	public int compareHandValues(HandValue one, HandValue two) {
-		return SimpleHandValueComparePoker.straights(one, two);
-
 	}
 
 }

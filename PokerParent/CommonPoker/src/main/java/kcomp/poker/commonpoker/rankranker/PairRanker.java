@@ -10,16 +10,16 @@ import kcomp.poker.commonpoker.enums.Rank;
 import kcomp.poker.commonpoker.exceptions.HandRankException;
 import kcomp.poker.commonpoker.models.Card;
 import kcomp.poker.commonpoker.models.Hand;
-import kcomp.poker.commonpoker.models.HandValue;
+import kcomp.poker.commonpoker.models.handvalue.HandValue;
+import kcomp.poker.commonpoker.models.handvalue.PairHandValue;
 import kcomp.poker.commonpoker.utilities.HandUtility;
-import kcomp.poker.commonpoker.utilities.SimpleHandValueComparePoker;
 
 public class PairRanker implements HandRanker {
 
 	@Override
 	public HandValue getHandValue(Hand hand) throws HandRankException {
 
-		HandValue handValue = new HandValue();
+		HandValue handValue = new PairHandValue();
 
 		Map<Rank, Integer> ranks = hand.getRanks();
 
@@ -80,12 +80,6 @@ public class PairRanker implements HandRanker {
 	@Override
 	public HandRank getHandRank() {
 		return HandRank.PAIR;
-	}
-
-	@Override
-	public int compareHandValues(HandValue one, HandValue two) {
-		return SimpleHandValueComparePoker.threeOfAKindAndPair(one, two);
-
 	}
 
 }

@@ -3,20 +3,18 @@ package kcomp.poker.commonpoker.ai;
 import java.util.ArrayList;
 import java.util.List;
 
+import kcomp.poker.commonpoker.comparehandValues.SimpleHandValueComparePoker;
 import kcomp.poker.commonpoker.exceptions.DeckException;
 import kcomp.poker.commonpoker.exceptions.HandRankException;
+import kcomp.poker.commonpoker.factory.HandFactory;
 import kcomp.poker.commonpoker.models.Card;
 import kcomp.poker.commonpoker.models.Deck;
 import kcomp.poker.commonpoker.models.Hand;
-import kcomp.poker.commonpoker.models.HandValue;
 import kcomp.poker.commonpoker.models.StandardDeck;
+import kcomp.poker.commonpoker.models.handvalue.HandValue;
 import kcomp.poker.commonpoker.rankranker.RankHand;
-import kcomp.poker.commonpoker.utilities.CreateHandMappings;
-import kcomp.poker.commonpoker.utilities.DefaultCreateHandMappings;
 
 public class HandStrengthServiceIMPL implements HandStrengthService {
-
-	private static CreateHandMappings createHandMappings = new DefaultCreateHandMappings();
 
 	private RankHand rankHand;
 
@@ -25,7 +23,7 @@ public class HandStrengthServiceIMPL implements HandStrengthService {
 	}
 
 	@Override
-	public int calculateHandStrength(Hand hand) throws HandRankException {
+	public double calculateHandStrength(Hand hand) throws HandRankException {
 
 		Deck deck = new StandardDeck();
 		deck.removeCards(hand.getCards());
@@ -48,7 +46,10 @@ public class HandStrengthServiceIMPL implements HandStrengthService {
 
 		for (Hand opHand : opHands) {
 			HandValue opValue = rankHand.rankHand(opHand);
-			int value = rankHand.compareHandValues(opValue, handValue);
+			int value = SimpleHandValueComparePoker.compare(handValue, opValue);
+
+			System.out.println("HandValue: " + handValue.getHandRank() + " OpValue: " + opValue.getHandRank()
+					+ " Value: " + value);
 
 			if (value == 1) {
 				ahead++;
@@ -60,7 +61,9 @@ public class HandStrengthServiceIMPL implements HandStrengthService {
 
 		}
 
-		int handstrength = (ahead + tied / 2) / (ahead + tied + behind);
+		double handstrength = (ahead + tied / 2.0) / (ahead + tied + behind);
+
+		System.out.println("Hand Strength: " + handstrength);
 
 		return handstrength;
 	}
@@ -68,13 +71,18 @@ public class HandStrengthServiceIMPL implements HandStrengthService {
 	private List<Hand> createOpponentHands(Deck deck, List<Card> faceUp) throws DeckException {
 		List<Hand> hands = new ArrayList<>();
 
-		Hand opHand = new Hand(createHandMappings.createRanks(), createHandMappings.createSuits());
+		while (deck.numberOfCardsRemaining() > 1) {
 
-		opHand.addFaceDown(deck.getNextCard());
-		opHand.addFaceDown(deck.getNextCard());
+			Hand opHand = HandFactory.createHand();
 
-		for (Card card : faceUp) {
-			opHand.addFaceUp(card);
+			opHand.addFaceDown(deck.getNextCard());
+			opHand.addFaceDown(deck.getNextCard());
+
+			for (Card card : faceUp) {
+				opHand.addFaceUp(card);
+			}
+
+			hands.add(opHand);
 		}
 
 		return hands;
