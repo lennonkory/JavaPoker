@@ -9,15 +9,9 @@ import kcomp.poker.commonpoker.enums.Suit;
 
 public class Hand {
 
-	public Map<Rank, Integer> getRanks() {
-		return ranks;
-	}
-
-	public Map<Suit, Integer> getSuits() {
-		return suits;
-	}
-
 	List<Card> cards;
+	List<Card> faceDown;
+	List<Card> faceUp;
 
 	private Map<Rank, Integer> ranks;
 	private Map<Suit, Integer> suits;
@@ -26,6 +20,8 @@ public class Hand {
 		this.ranks = ranks;
 		this.suits = suits;
 		cards = new ArrayList<>();
+		faceDown = new ArrayList<>();
+		faceUp = new ArrayList<>();
 	}
 
 	public void addCard(Card card) {
@@ -52,4 +48,33 @@ public class Hand {
 	public List<Card> getCards() {
 		return this.cards;
 	}
+
+	public void addFaceDown(Card card) {
+		this.faceDown.add(card);
+		addCard(card);
+
+	}
+
+	public void addFaceUp(Card card) {
+		this.faceUp.add(card);
+		addCard(card);
+
+	}
+
+	public List<Card> getFaceDown() {
+		return faceDown;
+	}
+
+	public List<Card> getFaceUp() {
+		return faceUp;
+	}
+
+	public Map<Rank, Integer> getRanks() {
+		return ranks;
+	}
+
+	public Map<Suit, Integer> getSuits() {
+		return suits;
+	}
+
 }

@@ -11,6 +11,7 @@ import kcomp.poker.commonpoker.exceptions.HandRankException;
 import kcomp.poker.commonpoker.models.Card;
 import kcomp.poker.commonpoker.models.Hand;
 import kcomp.poker.commonpoker.models.HandValue;
+import kcomp.poker.commonpoker.utilities.SimpleHandValueComparePoker;
 
 public class FlushRanker implements HandRanker {
 
@@ -61,6 +62,17 @@ public class FlushRanker implements HandRanker {
 		}
 
 		handValue.setMainCards(mains);
+
+	}
+
+	@Override
+	public HandRank getHandRank() {
+		return HandRank.FLUSH;
+	}
+
+	@Override
+	public int compareHandValues(HandValue one, HandValue two) {
+		return SimpleHandValueComparePoker.straights(one, two);
 
 	}
 

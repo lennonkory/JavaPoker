@@ -10,6 +10,7 @@ import kcomp.poker.commonpoker.exceptions.HandRankException;
 import kcomp.poker.commonpoker.models.Card;
 import kcomp.poker.commonpoker.models.Hand;
 import kcomp.poker.commonpoker.models.HandValue;
+import kcomp.poker.commonpoker.utilities.SimpleHandValueComparePoker;
 
 public class FullHouseRanker implements HandRanker {
 
@@ -71,6 +72,18 @@ public class FullHouseRanker implements HandRanker {
 		}
 
 		handValue.setMainCards(mains);
+
+	}
+
+	@Override
+	public HandRank getHandRank() {
+		return HandRank.FULL_HOUSE;
+	}
+
+	@Override
+	public int compareHandValues(HandValue one, HandValue two) {
+
+		return SimpleHandValueComparePoker.fourFull(one, two);
 
 	}
 

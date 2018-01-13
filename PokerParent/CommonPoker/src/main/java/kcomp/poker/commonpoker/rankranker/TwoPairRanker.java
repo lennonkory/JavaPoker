@@ -12,6 +12,7 @@ import kcomp.poker.commonpoker.models.Card;
 import kcomp.poker.commonpoker.models.Hand;
 import kcomp.poker.commonpoker.models.HandValue;
 import kcomp.poker.commonpoker.utilities.HandUtility;
+import kcomp.poker.commonpoker.utilities.SimpleHandValueComparePoker;
 
 public class TwoPairRanker implements HandRanker {
 
@@ -93,4 +94,14 @@ public class TwoPairRanker implements HandRanker {
 
 	}
 
+	@Override
+	public HandRank getHandRank() {
+		return HandRank.TWO_PAIR;
+	}
+
+	@Override
+	public int compareHandValues(HandValue one, HandValue two) {
+		return SimpleHandValueComparePoker.twoPair(one, two);
+
+	}
 }

@@ -1,6 +1,7 @@
 package kcomp.poker.commonpoker.models;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Random;
 
@@ -83,6 +84,16 @@ public class StandardDeck implements Deck {
 			}
 		}
 		return false;
+	}
+
+	@Override
+	public void removeCard(Card card) {
+		cards.remove(card);
+	}
+
+	@Override
+	public void removeCards(Collection<Card> cards) {
+		this.cards.removeAll(cards);
 	}
 
 }

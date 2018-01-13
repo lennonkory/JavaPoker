@@ -12,6 +12,7 @@ import kcomp.poker.commonpoker.models.Card;
 import kcomp.poker.commonpoker.models.Hand;
 import kcomp.poker.commonpoker.models.HandValue;
 import kcomp.poker.commonpoker.utilities.HandUtility;
+import kcomp.poker.commonpoker.utilities.SimpleHandValueComparePoker;
 
 public class PairRanker implements HandRanker {
 
@@ -73,6 +74,17 @@ public class PairRanker implements HandRanker {
 		}
 
 		handValue.setMainCards(new ArrayList<>(pairs));
+
+	}
+
+	@Override
+	public HandRank getHandRank() {
+		return HandRank.PAIR;
+	}
+
+	@Override
+	public int compareHandValues(HandValue one, HandValue two) {
+		return SimpleHandValueComparePoker.threeOfAKindAndPair(one, two);
 
 	}
 

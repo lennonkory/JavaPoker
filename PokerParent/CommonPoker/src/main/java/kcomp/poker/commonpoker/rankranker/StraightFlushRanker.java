@@ -8,6 +8,7 @@ import kcomp.poker.commonpoker.models.Hand;
 import kcomp.poker.commonpoker.models.HandValue;
 import kcomp.poker.commonpoker.utilities.CreateHandMappings;
 import kcomp.poker.commonpoker.utilities.DefaultCreateHandMappings;
+import kcomp.poker.commonpoker.utilities.SimpleHandValueComparePoker;
 
 public class StraightFlushRanker implements HandRanker {
 
@@ -47,6 +48,17 @@ public class StraightFlushRanker implements HandRanker {
 		handValue.setHandRank(HandRank.STRAIGHT_FLUSH);
 
 		return handValue;
+
+	}
+
+	@Override
+	public HandRank getHandRank() {
+		return HandRank.STRAIGHT_FLUSH;
+	}
+
+	@Override
+	public int compareHandValues(HandValue one, HandValue two) {
+		return SimpleHandValueComparePoker.straights(one, two);
 
 	}
 

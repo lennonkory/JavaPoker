@@ -85,9 +85,9 @@ public class HandCreator {
 
 		hand.addCard(new Card(Suit.CLUBS, Rank.ACE));
 		hand.addCard(new Card(Suit.DIAMONDS, Rank.ACE));
-		hand.addCard(new Card(Suit.CLUBS, Rank.EIGHT));
-		hand.addCard(new Card(Suit.HEARTS, Rank.JACK));
-		hand.addCard(new Card(Suit.CLUBS, Rank.KING));
+		hand.addFaceUp(new Card(Suit.CLUBS, Rank.EIGHT));
+		hand.addFaceUp(new Card(Suit.HEARTS, Rank.JACK));
+		hand.addFaceUp(new Card(Suit.CLUBS, Rank.KING));
 
 		return hand;
 	}

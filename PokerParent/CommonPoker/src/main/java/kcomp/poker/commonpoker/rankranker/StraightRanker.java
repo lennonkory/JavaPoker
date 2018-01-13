@@ -11,6 +11,7 @@ import kcomp.poker.commonpoker.exceptions.HandRankException;
 import kcomp.poker.commonpoker.models.Card;
 import kcomp.poker.commonpoker.models.Hand;
 import kcomp.poker.commonpoker.models.HandValue;
+import kcomp.poker.commonpoker.utilities.SimpleHandValueComparePoker;
 
 public class StraightRanker implements HandRanker {
 
@@ -109,6 +110,17 @@ public class StraightRanker implements HandRanker {
 		}
 
 		handValue.setMainCards(main);
+
+	}
+
+	@Override
+	public HandRank getHandRank() {
+		return HandRank.STRAIGHT;
+	}
+
+	@Override
+	public int compareHandValues(HandValue one, HandValue two) {
+		return SimpleHandValueComparePoker.straights(one, two);
 
 	}
 
