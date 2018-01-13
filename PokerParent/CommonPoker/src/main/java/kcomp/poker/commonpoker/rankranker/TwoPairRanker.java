@@ -89,6 +89,7 @@ public class TwoPairRanker implements HandRanker {
 		kickers.removeAll(handValue.getMainCards());
 
 		Collections.sort(kickers);
+		Collections.reverse(kickers);
 
 		kickers.subList(1, kickers.size()).clear();
 

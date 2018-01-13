@@ -73,6 +73,7 @@ public class StraightRanker implements HandRanker {
 		List<Card> main = new ArrayList<>();
 
 		Collections.sort(cards);
+		Collections.reverse(cards);
 
 		Card ace = null;
 

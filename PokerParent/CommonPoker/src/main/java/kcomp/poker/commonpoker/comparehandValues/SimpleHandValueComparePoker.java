@@ -64,6 +64,12 @@ public class SimpleHandValueComparePoker {
 
 		if (compare == 0) {
 
+			// This can happen if players just have two cards and the handvalue
+			// is a Pair
+			if (one.getKickers() == null || two.getKickers() == null) {
+				return 0;
+			}
+
 			int size = Math.min(one.getKickers().size(), two.getKickers().size());
 
 			for (int i = 0; i < size; i++) {
@@ -74,6 +80,8 @@ public class SimpleHandValueComparePoker {
 					return value > 0 ? 1 : -1;
 				}
 			}
+			// All kickers are the same
+			return 0;
 
 		}
 

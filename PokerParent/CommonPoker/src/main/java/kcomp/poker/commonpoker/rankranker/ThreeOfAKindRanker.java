@@ -12,7 +12,7 @@ import kcomp.poker.commonpoker.models.Card;
 import kcomp.poker.commonpoker.models.Hand;
 import kcomp.poker.commonpoker.models.handvalue.HandValue;
 import kcomp.poker.commonpoker.models.handvalue.HighCardHandValue;
-import kcomp.poker.commonpoker.models.handvalue.ThreeOfAKingHandValue;
+import kcomp.poker.commonpoker.models.handvalue.ThreeOfAKindHandValue;
 import kcomp.poker.commonpoker.utilities.HandUtility;
 
 public class ThreeOfAKindRanker implements HandRanker {
@@ -40,7 +40,7 @@ public class ThreeOfAKindRanker implements HandRanker {
 			return handValue;
 		}
 
-		HandValue handValue = new ThreeOfAKingHandValue();
+		HandValue handValue = new ThreeOfAKindHandValue();
 
 		// Set main cards
 		setMainCards(pair, hand.getCards(), handValue);
@@ -62,6 +62,7 @@ public class ThreeOfAKindRanker implements HandRanker {
 		kickers.removeAll(handValue.getMainCards());
 
 		Collections.sort(kickers);
+		Collections.reverse(kickers);
 
 		kickers.subList(2, kickers.size()).clear();
 

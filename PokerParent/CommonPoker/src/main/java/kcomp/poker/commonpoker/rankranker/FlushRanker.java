@@ -49,6 +49,7 @@ public class FlushRanker implements HandRanker {
 	private void setMains(Suit suit, List<Card> cards, HandValue handValue) {
 
 		Collections.sort(cards);
+		Collections.reverse(cards);
 
 		List<Card> mains = new ArrayList<>();
 		int count = 0;
