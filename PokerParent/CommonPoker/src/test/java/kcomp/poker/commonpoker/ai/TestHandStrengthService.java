@@ -55,7 +55,7 @@ public class TestHandStrengthService {
 	}
 
 	@Test
-	public void testHP() throws HandRankException, DeckException {
+	public void testHP() throws Exception {
 
 		Hand hand = HandFactory.createHand();
 
@@ -71,7 +71,7 @@ public class TestHandStrengthService {
 	}
 
 	@Test
-	public void testEHS3ofaKind() throws HandRankException, DeckException {
+	public void testEHS3ofaKind() throws Exception {
 
 		Hand hand = HandFactory.createHand();
 
@@ -92,7 +92,7 @@ public class TestHandStrengthService {
 	}
 
 	@Test
-	public void testEHSHighCard_low() throws HandRankException, DeckException {
+	public void testEHSHighCard_low() throws Exception {
 
 		Hand hand = HandFactory.createHand();
 

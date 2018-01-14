@@ -11,6 +11,7 @@ public interface HandStrengthService {
 
 	double calculateHandStrength(Hand hand, List<Card> board) throws HandRankException;
 
-	HandPotential calculateHandPotential(Hand hand, List<Card> board) throws HandRankException, DeckException;
+	HandPotential calculateHandPotential(Hand hand, List<Card> board)
+			throws HandRankException, DeckException, Exception;
 
 }

@@ -16,6 +16,7 @@ import kcomp.poker.commonpoker.rankranker.RankHand;
 public class HandStrengthServiceIMPL implements HandStrengthService {
 
 	private RankHand rankHand;
+	private int ahead = 0, tied = 1, behind = 2;
 
 	public HandStrengthServiceIMPL(RankHand rankHand) {
 		this.rankHand = rankHand;
@@ -69,6 +70,7 @@ public class HandStrengthServiceIMPL implements HandStrengthService {
 	private List<Hand> createOpponentHands(Deck deck, List<Card> board, List<Card> mainCards) throws DeckException {
 
 		List<Hand> hands = new ArrayList<>();
+		List<Card> usedCards = new ArrayList<>();
 
 		System.out.println("Size of deck: " + deck.numberOfCardsRemaining());
 
@@ -78,7 +80,8 @@ public class HandStrengthServiceIMPL implements HandStrengthService {
 
 			Deck innerDeck = new StandardDeck();
 			innerDeck.removeCards(mainCards);
-			innerDeck.removeCard(cardOne);
+			usedCards.add(cardOne);
+			innerDeck.removeCards(usedCards);
 
 			while (innerDeck.numberOfCardsRemaining() > 0) {
 
@@ -86,10 +89,6 @@ public class HandStrengthServiceIMPL implements HandStrengthService {
 
 				opHand.addFaceDown(cardOne);
 				opHand.addFaceDown(innerDeck.getNextCard());
-
-				if (inHand(hands, opHand)) {
-					continue;
-				}
 
 				for (Card card : board) {
 					opHand.addFaceUp(card);
@@ -104,23 +103,52 @@ public class HandStrengthServiceIMPL implements HandStrengthService {
 		return hands;
 	}
 
-	private boolean inHand(List<Hand> hands, Hand hand) {
+	private void hp(Deck turn, List<Card> usedCards, Hand hand, Hand opHand, int index, int[][] HP) throws Exception {
 
-		for (Hand opHand : hands) {
-			Hand tempHand = HandFactory.cloneHand(opHand);
-			int size = tempHand.getCards().size();
-			tempHand.removeCards(hand.getCards());
+		while (turn.numberOfCardsRemaining() > 0) {
 
-			if (size - tempHand.getCards().size() == hand.getCards().size()) {
-				return true;
+			Card turnCard = turn.getNextCard();
+
+			usedCards.add(turnCard);
+
+			Deck river = new StandardDeck();
+			river.removeCards(hand.getCards());
+			river.removeCards(opHand.getCards());
+			river.removeCards(usedCards);
+
+			while (river.numberOfCardsRemaining() > 0) {
+
+				Card riverCard = river.getNextCard();
+
+				Hand newHand = HandFactory.createHand();
+				newHand.addFaceUp(hand.getCards());
+				newHand.addFaceUp(turnCard);
+				newHand.addFaceUp(riverCard);
+
+				Hand newOpHand = HandFactory.createHand();
+				newOpHand.addFaceUp(opHand.getCards());
+				newOpHand.addFaceUp(turnCard);
+				newOpHand.addFaceUp(riverCard);
+
+				HandValue inner = rankHand.rankHand(newHand);
+				HandValue opInner = rankHand.rankHand(newOpHand);
+
+				int innerValue = inner.compareTo(opInner);
+
+				if (innerValue == 1) {
+					HP[index][ahead] += 1;
+				} else if (innerValue == 0) {
+					HP[index][tied] += 1;
+				} else {
+					HP[index][behind] += 1;
+				}
 			}
 		}
 
-		return false;
 	}
 
 	@Override
-	public HandPotential calculateHandPotential(Hand hand, List<Card> board) throws HandRankException, DeckException {
+	public HandPotential calculateHandPotential(Hand hand, List<Card> board) throws Exception {
 
 		int[][] HP = new int[3][3];
 		int[] HPTotal = new int[3];
@@ -162,47 +190,7 @@ public class HandStrengthServiceIMPL implements HandStrengthService {
 
 			List<Card> usedCards = new ArrayList<>();
 
-			while (turn.numberOfCardsRemaining() > 0) {
-
-				Card turnCard = turn.getNextCard();
-
-				usedCards.add(turnCard);
-
-				Deck river = new StandardDeck();
-				river.removeCards(hand.getCards());
-				river.removeCards(opHand.getCards());
-				river.removeCards(usedCards);
-
-				while (river.numberOfCardsRemaining() > 0) {
-
-					Card riverCard = river.getNextCard();
-
-					Hand newHand = HandFactory.createHand();
-
-					newHand.addFaceUp(hand.getCards());
-					newHand.addFaceUp(turnCard);
-					newHand.addFaceUp(riverCard);
-
-					Hand newOpHand = HandFactory.createHand();
-					newOpHand.addFaceUp(opHand.getCards());
-					newOpHand.addFaceUp(turnCard);
-					newOpHand.addFaceUp(riverCard);
-
-					HandValue inner = rankHand.rankHand(newHand);
-					HandValue opInner = rankHand.rankHand(newOpHand);
-
-					int innerValue = inner.compareTo(opInner);
-
-					if (innerValue == 1) {
-						HP[index][ahead] += 1;
-					} else if (innerValue == 0) {
-						HP[index][tied] += 1;
-					} else {
-						HP[index][behind] += 1;
-					}
-				}
-
-			}
+			hp(turn, usedCards, hand, opHand, index, HP);
 
 		}
 
