@@ -22,6 +22,9 @@ public class HandStrengthServiceIMPL implements HandStrengthService {
 		this.rankHand = rankHand;
 	}
 
+	private static final int NUM_CARDS_REMAING_OP = 20;
+	private static final int NUM_CARDS_REMAING_HP = 20;
+
 	@Override
 	public double calculateHandStrength(Hand hand, List<Card> board) throws HandRankException {
 
@@ -74,7 +77,7 @@ public class HandStrengthServiceIMPL implements HandStrengthService {
 
 		System.out.println("Size of deck: " + deck.numberOfCardsRemaining());
 
-		while (deck.numberOfCardsRemaining() > 0) {
+		while (deck.numberOfCardsRemaining() > NUM_CARDS_REMAING_OP) {
 
 			Card cardOne = deck.getNextCard();
 
@@ -83,7 +86,7 @@ public class HandStrengthServiceIMPL implements HandStrengthService {
 			usedCards.add(cardOne);
 			innerDeck.removeCards(usedCards);
 
-			while (innerDeck.numberOfCardsRemaining() > 0) {
+			while (innerDeck.numberOfCardsRemaining() > NUM_CARDS_REMAING_OP) {
 
 				Hand opHand = HandFactory.createHand();
 
@@ -105,7 +108,7 @@ public class HandStrengthServiceIMPL implements HandStrengthService {
 
 	private void hp(Deck turn, List<Card> usedCards, Hand hand, Hand opHand, int index, int[][] HP) throws Exception {
 
-		while (turn.numberOfCardsRemaining() > 0) {
+		while (turn.numberOfCardsRemaining() > NUM_CARDS_REMAING_HP) {
 
 			Card turnCard = turn.getNextCard();
 
@@ -116,7 +119,7 @@ public class HandStrengthServiceIMPL implements HandStrengthService {
 			river.removeCards(opHand.getCards());
 			river.removeCards(usedCards);
 
-			while (river.numberOfCardsRemaining() > 0) {
+			while (river.numberOfCardsRemaining() > NUM_CARDS_REMAING_HP) {
 
 				Card riverCard = river.getNextCard();
 

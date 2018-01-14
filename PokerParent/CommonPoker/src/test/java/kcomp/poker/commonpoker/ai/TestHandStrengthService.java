@@ -105,12 +105,20 @@ public class TestHandStrengthService {
 
 		hand.addFaceUp(board);
 
+		long startTime = System.nanoTime();
+
 		double hs = handStrengthService.calculateHandStrength(hand, board);
 		HandPotential hp = handStrengthService.calculateHandPotential(hand, board);
 
 		double ehs = (hs * (1 - hp.getNegPotential())) + ((1 - hs) * hp.posPotential);
 
+		long endTime = System.nanoTime();
+
+		long duration = (endTime - startTime);
+
 		System.out.println("EHS: " + ehs);
+
+		System.out.println("Time: " + duration / 1000000 + "ms");
 
 	}
 }
