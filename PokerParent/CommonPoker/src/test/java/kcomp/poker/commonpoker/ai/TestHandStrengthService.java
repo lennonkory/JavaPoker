@@ -13,7 +13,9 @@ import kcomp.poker.commonpoker.exceptions.HandRankException;
 import kcomp.poker.commonpoker.factory.HandFactory;
 import kcomp.poker.commonpoker.factory.RankHandFactory;
 import kcomp.poker.commonpoker.models.Card;
+import kcomp.poker.commonpoker.models.Deck;
 import kcomp.poker.commonpoker.models.Hand;
+import kcomp.poker.commonpoker.models.StandardDeck;
 import kcomp.poker.commonpoker.rankranker.RankHand;
 
 public class TestHandStrengthService {
@@ -121,4 +123,52 @@ public class TestHandStrengthService {
 		System.out.println("Time: " + duration / 1000000 + "ms");
 
 	}
+
+	@Test
+	public void testRec() throws DeckException {
+
+		Deck deck = new StandardDeck();
+
+		int count = 0;
+
+		List<Card> board = createCards();
+
+		board.add(new Card(Suit.DIAMONDS, Rank.ACE));
+		board.add(new Card(Suit.CLUBS, Rank.QUEEN));
+
+		while (deck.numberOfCardsRemaining() > 5) {
+
+			Hand hand = HandFactory.createHand();
+
+			hand.addCard(deck.getNextCard());
+
+			count = createRecHand(hand, deck, 1, 0, count);
+
+		}
+
+		System.out.println("Count: " + count);
+
+	}
+
+	int createRecHand(Hand hand, Deck deck, int numCards, int count, int otherCount) throws DeckException {
+
+		if (count >= numCards) {
+			return otherCount;
+		}
+
+		Card card = deck.getNextCard();
+
+		hand.addCard(card);
+
+		Deck newDeck = new StandardDeck();
+		newDeck.removeCards(hand.getCards());
+
+		count++;
+		otherCount++;
+		otherCount = createRecHand(hand, newDeck, numCards, count, otherCount);
+
+		return otherCount;
+
+	}
+
 }

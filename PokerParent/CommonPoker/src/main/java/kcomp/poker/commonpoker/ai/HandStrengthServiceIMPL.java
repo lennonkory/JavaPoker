@@ -16,14 +16,14 @@ import kcomp.poker.commonpoker.rankranker.RankHand;
 public class HandStrengthServiceIMPL implements HandStrengthService {
 
 	private RankHand rankHand;
-	private int ahead = 0, tied = 1, behind = 2;
+	private static final int ahead = 0, tied = 1, behind = 2;
 
 	public HandStrengthServiceIMPL(RankHand rankHand) {
 		this.rankHand = rankHand;
 	}
 
-	private static final int NUM_CARDS_REMAING_OP = 20;
-	private static final int NUM_CARDS_REMAING_HP = 20;
+	private static final int NUM_CARDS_REMAING_OP = 0;
+	private static final int NUM_CARDS_REMAING_HP = 0;
 
 	@Override
 	public double calculateHandStrength(Hand hand, List<Card> board) throws HandRankException {
@@ -74,6 +74,7 @@ public class HandStrengthServiceIMPL implements HandStrengthService {
 
 		List<Hand> hands = new ArrayList<>();
 		List<Card> usedCards = new ArrayList<>();
+		usedCards.addAll(mainCards);
 
 		System.out.println("Size of deck: " + deck.numberOfCardsRemaining());
 
@@ -82,7 +83,6 @@ public class HandStrengthServiceIMPL implements HandStrengthService {
 			Card cardOne = deck.getNextCard();
 
 			Deck innerDeck = new StandardDeck();
-			innerDeck.removeCards(mainCards);
 			usedCards.add(cardOne);
 			innerDeck.removeCards(usedCards);
 
