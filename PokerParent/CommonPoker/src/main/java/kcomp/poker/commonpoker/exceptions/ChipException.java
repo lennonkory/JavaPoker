@@ -1,6 +1,6 @@
 package kcomp.poker.commonpoker.exceptions;
 
-public class ChipException extends Exception {
+public class ChipException extends RuntimeException {
 
 	/**
 	 * 

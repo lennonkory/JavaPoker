@@ -3,7 +3,7 @@ package kcomp.poker.commonpoker.models;
 import kcomp.poker.commonpoker.enums.PlayerStatus;
 import kcomp.poker.commonpoker.exceptions.ChipException;
 
-public abstract class Player {
+public class Player {
 
 	private String userName;
 	private int chipCount;
@@ -52,7 +52,5 @@ public abstract class Player {
 		}
 		this.chipCount -= numberOfChips;
 	}
-
-	public abstract void turn();
 
 }
