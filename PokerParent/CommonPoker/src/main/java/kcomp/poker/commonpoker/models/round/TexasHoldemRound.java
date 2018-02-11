@@ -1,6 +1,7 @@
 package kcomp.poker.commonpoker.models.round;
 
 import java.util.Collection;
+import java.util.List;
 
 import kcomp.poker.commonpoker.models.Player;
 import kcomp.poker.commonpoker.models.game.Pot;
@@ -28,6 +29,12 @@ public class TexasHoldemRound implements Round {
 	public boolean isOver() {
 		// TODO Auto-generated method stub
 		return false;
+	}
+
+	@Override
+	public List<Player> getWinners(Table table) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

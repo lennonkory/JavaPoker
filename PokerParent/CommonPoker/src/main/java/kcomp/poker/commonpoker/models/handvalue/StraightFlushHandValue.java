@@ -12,6 +12,10 @@ public class StraightFlushHandValue extends HandValue {
 	@Override
 	public int compareTo(HandValue o) {
 
+		if (o == null) {
+			return 1;
+		}
+
 		HandRank oneRank = this.getHandRank();
 		HandRank twoRank = o.getHandRank();
 

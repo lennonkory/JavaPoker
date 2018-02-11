@@ -5,11 +5,14 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.springframework.stereotype.Service;
+
 import kcomp.poker.commonpoker.enums.HandRank;
 import kcomp.poker.commonpoker.exceptions.HandRankException;
 import kcomp.poker.commonpoker.models.Hand;
 import kcomp.poker.commonpoker.models.handvalue.HandValue;
 
+@Service
 public class RankHand {
 
 	private Map<HandRank, HandRanker> rankers;

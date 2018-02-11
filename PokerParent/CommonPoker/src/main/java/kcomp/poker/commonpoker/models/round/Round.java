@@ -1,6 +1,9 @@
 package kcomp.poker.commonpoker.models.round;
 
+import java.util.List;
+
 import kcomp.poker.commonpoker.models.Player;
+import kcomp.poker.commonpoker.models.game.Table;
 
 public interface Round {
 
@@ -12,9 +15,18 @@ public interface Round {
 
 	// private void collectMoney();
 
-	// Player whos turn it is
+	// Player who's turn it is
 	public Player getActivePlayer();
 
 	public boolean isOver();
+
+	/**
+	 * Gets the winners of the round.
+	 *
+	 * @param table
+	 *            the table
+	 * @return the winners
+	 */
+	public List<Player> getWinners(Table table);
 
 }

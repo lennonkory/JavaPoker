@@ -9,6 +9,7 @@ import kcomp.poker.commonpoker.models.Player;
 public class PokerTable implements Table {
 
 	private List<Seat> seats;
+
 	private Player currentPlayer;
 	private Player dealer;
 
@@ -78,8 +79,16 @@ public class PokerTable implements Table {
 
 	@Override
 	public Collection<Player> getAllPlayers() {
-		// TODO Auto-generated method stub
-		return null;
+
+		List<Player> players = new ArrayList<>();
+
+		for (Seat seat : seats) {
+			if (!seat.isEmpty()) {
+				players.add(seat.getPlayer());
+			}
+		}
+
+		return players;
 	}
 
 	@Override
@@ -96,6 +105,7 @@ public class PokerTable implements Table {
 	}
 
 	private class Seat {
+
 		Player player;
 
 		Seat() {
