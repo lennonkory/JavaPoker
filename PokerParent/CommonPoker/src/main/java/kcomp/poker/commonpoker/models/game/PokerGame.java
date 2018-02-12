@@ -13,7 +13,6 @@ public class PokerGame implements Game {
 	public void startGame() {
 		Round round = roundContainer.selectRound();
 		Player dealer = table.getDealer();
-		round.start();
 
 	}
 

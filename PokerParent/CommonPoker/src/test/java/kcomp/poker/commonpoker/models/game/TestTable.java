@@ -2,12 +2,15 @@ package kcomp.poker.commonpoker.models.game;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNull;
 
 import java.util.List;
 
 import org.junit.Before;
 import org.junit.Test;
 
+import kcomp.poker.commonpoker.creators.PlayerCreater;
+import kcomp.poker.commonpoker.enums.PlayerStatus;
 import kcomp.poker.commonpoker.models.Player;
 
 public class TestTable {
@@ -50,6 +53,55 @@ public class TestTable {
 
 		assertFalse(emptySeatLocations.contains(3));
 
+	}
+
+	@Test
+	public void testGetNextDealerWithOnePlayerShouldReturnNull() {
+		table.addPLayer(PlayerCreater.createPlayer("Dealer"), 3);
+		Player player = table.getAndSetNextDealer();
+		assertNull(player);
+	}
+
+	@Test
+	public void testGetNextDealerWithTwoPlayersShouldReturnPlayerTwo() {
+		table.addPLayer(PlayerCreater.createPlayer("One"), 3);
+		table.addPLayer(PlayerCreater.createPlayer("Two"), 7);
+		Player player = table.getAndSetNextDealer();
+		assertEquals("Two", player.getUserName());
+	}
+
+	@Test
+	public void testGetNextDealerWithTwoPlayersLoopedShouldReturnPlayerTwo() {
+		table.addPLayer(PlayerCreater.createPlayer("One"), 3);
+		table.addPLayer(PlayerCreater.createPlayer("Two"), 1);
+		Player player = table.getAndSetNextDealer();
+		assertEquals("Two", player.getUserName());
+	}
+
+	@Test
+	public void testGetNextDealerWith5PlayersShouldReturnPlayerFour() {
+
+		table.addPLayer(PlayerCreater.createPlayer("Three"), 3);
+		table.addPLayer(PlayerCreater.createPlayer("Five"), 2);
+		table.addPLayer(PlayerCreater.createPlayer("Four"), 6);
+		table.addPLayer(PlayerCreater.createPlayer("One", PlayerStatus.SITTING_OUT, 10), 4);
+		table.addPLayer(PlayerCreater.createPlayer("Two"), 1);
+
+		Player player = table.getAndSetNextDealer();
+		assertEquals("Four", player.getUserName());
+	}
+
+	@Test
+	public void testGetNextPlayerWith5PlayersShouldReturnPlayerFour() {
+
+		table.addPLayer(PlayerCreater.createPlayer("Three"), 3);
+		table.addPLayer(PlayerCreater.createPlayer("Five"), 2);
+		table.addPLayer(PlayerCreater.createPlayer("Four"), 6);
+		table.addPLayer(PlayerCreater.createPlayer("One", PlayerStatus.SITTING_OUT, 10), 4);
+		table.addPLayer(PlayerCreater.createPlayer("Two"), 1);
+
+		Player player = table.getAndSetNextPlayer();
+		assertEquals("Four", player.getUserName());
 	}
 
 }

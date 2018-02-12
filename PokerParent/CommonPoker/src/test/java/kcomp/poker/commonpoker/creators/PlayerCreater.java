@@ -15,4 +15,14 @@ public class PlayerCreater {
 		return player;
 	}
 
+	public static Player createPlayer(String userName) {
+		Player player = new Player();
+
+		player.addChips(100);
+		player.setUserName(userName);
+		player.setPlayerStatus(PlayerStatus.READY);
+
+		return player;
+	}
+
 }

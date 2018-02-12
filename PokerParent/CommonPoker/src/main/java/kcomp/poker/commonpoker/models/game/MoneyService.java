@@ -2,7 +2,6 @@ package kcomp.poker.commonpoker.models.game;
 
 import java.util.Collection;
 
-import kcomp.poker.commonpoker.enums.PlayerStatus;
 import kcomp.poker.commonpoker.models.Player;
 
 public class MoneyService {
@@ -40,14 +39,14 @@ public class MoneyService {
 		player.addChips(pot.getPlayerPotSize(player));
 	}
 
-	public static void collectMoneyAndAddToPotFromActivePlayers(Table table, int amount, Pot pot) {
+	public static void collectMoneyAndAddToPotFromPlayers(Table table, int amount, Pot pot) {
 
 		Collection<Player> players = table.getAllPlayers();
 
 		for (Player player : players) {
-			if (!PlayerStatus.SITTING_OUT.equals(player.getPlayerStatus())) {
-				collectMoneyAndAddToPot(player, amount, pot);
-			}
+
+			collectMoneyAndAddToPot(player, amount, pot);
+
 		}
 
 	}
