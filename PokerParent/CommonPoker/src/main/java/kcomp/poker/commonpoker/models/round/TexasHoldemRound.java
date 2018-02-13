@@ -1,7 +1,7 @@
 package kcomp.poker.commonpoker.models.round;
 
 import java.util.Collection;
-import java.util.List;
+import java.util.Queue;
 
 import kcomp.poker.commonpoker.enums.PlayerStatus;
 import kcomp.poker.commonpoker.models.Deck;
@@ -13,10 +13,10 @@ import kcomp.poker.commonpoker.models.game.Table;
 
 public class TexasHoldemRound implements Round {
 
-	private List<Street> streets;
-	private Street currrentStreet;
+	private Queue<Street> streets;
+	private Street currentStreet;
 
-	public TexasHoldemRound(List<Street> streets) {
+	public TexasHoldemRound(Queue<Street> streets) {
 		this.streets = streets;
 	}
 
@@ -25,9 +25,8 @@ public class TexasHoldemRound implements Round {
 
 		setToReady(table);
 		collectAntees(table, rules.getAntees(), pot);
-		currrentStreet = streets.get(0);
-		streets.remove(0);
-		currrentStreet.dealCards(table, deck);
+		currentStreet = streets.poll();
+		currentStreet.dealCards(table, deck);
 		collectBlinds(table, pot, rules);
 
 	}
@@ -57,21 +56,29 @@ public class TexasHoldemRound implements Round {
 	}
 
 	@Override
-	public Player getActivePlayer() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
 	public boolean isOver() {
-		// TODO Auto-generated method stub
+		if (streets.isEmpty() && currentStreet == null) {
+			return true;
+		}
 		return false;
 	}
 
 	@Override
-	public List<Player> getWinners(Table table) {
-		// TODO Auto-generated method stub
-		return null;
+	public void updateRound(Table table, Rules rules, Deck deck) {
+
+		if (currentStreet == null) {
+			return;
+		}
+
+		if (currentStreet.isOver(table)) {
+			currentStreet = streets.poll();
+			if (currentStreet != null) {
+				currentStreet.setToReady(table);
+				currentStreet.dealCards(table, deck);
+
+			}
+		}
+
 	}
 
 }

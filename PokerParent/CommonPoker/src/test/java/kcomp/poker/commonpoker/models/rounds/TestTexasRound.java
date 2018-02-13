@@ -1,20 +1,26 @@
-package kcomp.poker.commonpoker.models;
+package kcomp.poker.commonpoker.models.rounds;
 
-import java.util.ArrayList;
-import java.util.List;
+import static org.junit.Assert.assertEquals;
+
+import java.util.LinkedList;
+import java.util.Queue;
 
 import org.junit.Before;
 import org.junit.Test;
 
 import kcomp.poker.commonpoker.creators.PlayerCreater;
 import kcomp.poker.commonpoker.enums.PlayerStatus;
+import kcomp.poker.commonpoker.models.Deck;
+import kcomp.poker.commonpoker.models.Player;
+import kcomp.poker.commonpoker.models.StandardDeck;
 import kcomp.poker.commonpoker.models.game.PokerPot;
 import kcomp.poker.commonpoker.models.game.PokerTable;
 import kcomp.poker.commonpoker.models.game.Pot;
 import kcomp.poker.commonpoker.models.game.Rules;
 import kcomp.poker.commonpoker.models.game.Table;
 import kcomp.poker.commonpoker.models.game.TexasRules;
-import kcomp.poker.commonpoker.models.round.PreFlop;
+import kcomp.poker.commonpoker.models.round.FlopStreet;
+import kcomp.poker.commonpoker.models.round.PreFlopStreet;
 import kcomp.poker.commonpoker.models.round.Street;
 import kcomp.poker.commonpoker.models.round.TexasHoldemRound;
 
@@ -29,9 +35,10 @@ public class TestTexasRound {
 
 	@Before
 	public void init() {
-		Street street = new PreFlop();
-		List<Street> streets = new ArrayList<>();
-		streets.add(street);
+
+		Queue<Street> streets = new LinkedList<>();
+		streets.add(new PreFlopStreet());
+		streets.add(new FlopStreet());
 
 		round = new TexasHoldemRound(streets);
 		table = new PokerTable(SIZE);
@@ -43,13 +50,36 @@ public class TestTexasRound {
 
 	@Test
 	public void testBasicRound() {
+
 		Player one = PlayerCreater.createPlayer("One", PlayerStatus.READY, 100);
 		Player two = PlayerCreater.createPlayer("Two", PlayerStatus.READY, 100);
+
 		table.addPLayer(one);
 		table.addPLayer(two);
+
 		round.start(table, rules, deck, pot);
 
-		System.out.println("Cat");
+	}
+
+	@Test
+	public void testTwoStreets() {
+
+		Player one = PlayerCreater.createPlayer("One", PlayerStatus.READY, 100);
+		Player two = PlayerCreater.createPlayer("Two", PlayerStatus.READY, 100);
+
+		table.addPLayer(one);
+		table.addPLayer(two);
+
+		round.start(table, rules, deck, pot);
+
+		assertEquals(2, one.getHand().getCards().size());
+
+		table.setPlayersStatusInRoundTo(PlayerStatus.CALLED);
+
+		round.updateRound(table, rules, deck);
+
+		assertEquals(5, one.getHand().getCards().size());
+
 	}
 
 }

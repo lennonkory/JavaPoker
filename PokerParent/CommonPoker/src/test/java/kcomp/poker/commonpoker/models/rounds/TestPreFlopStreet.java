@@ -1,4 +1,4 @@
-package kcomp.poker.commonpoker.models;
+package kcomp.poker.commonpoker.models.rounds;
 
 import static org.junit.Assert.assertEquals;
 
@@ -7,13 +7,17 @@ import org.junit.Test;
 
 import kcomp.poker.commonpoker.creators.PlayerCreater;
 import kcomp.poker.commonpoker.enums.PlayerStatus;
+import kcomp.poker.commonpoker.models.Deck;
+import kcomp.poker.commonpoker.models.Hand;
+import kcomp.poker.commonpoker.models.Player;
+import kcomp.poker.commonpoker.models.StandardDeck;
 import kcomp.poker.commonpoker.models.game.PokerTable;
 import kcomp.poker.commonpoker.models.game.Table;
-import kcomp.poker.commonpoker.models.round.PreFlop;
+import kcomp.poker.commonpoker.models.round.PreFlopStreet;
 
-public class TestPreFlop {
+public class TestPreFlopStreet {
 
-	PreFlop street = new PreFlop();
+	PreFlopStreet street = new PreFlopStreet();
 
 	private Table table;
 	private static final int SIZE = 9;
