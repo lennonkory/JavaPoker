@@ -32,7 +32,7 @@ public class PokerTable implements Table {
 	@Override
 	public Player getAndSetNextPlayer() {
 		int currentDealerLocation = findPlayerLocation(currentPlayer);
-		currentPlayer = findPlayer(currentDealerLocation, PlayerStatus.SITTING_OUT);
+		currentPlayer = findPlayer(currentDealerLocation, PlayerStatus.SITTING_OUT, PlayerStatus.FOLDED);
 		return currentPlayer;
 	}
 

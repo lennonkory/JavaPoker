@@ -82,4 +82,53 @@ public class TestTexasRound {
 
 	}
 
+	@Test
+	public void testTwoStreets3Players() {
+
+		Player one = PlayerCreater.createPlayer("One", PlayerStatus.READY, 100);
+		Player two = PlayerCreater.createPlayer("Two", PlayerStatus.READY, 100);
+		Player three = PlayerCreater.createPlayer("Three", PlayerStatus.READY, 100);
+
+		table.addPLayer(one);
+		table.addPLayer(two);
+		table.addPLayer(three);
+
+		round.start(table, rules, deck, pot);
+
+		assertEquals(2, one.getHand().getCards().size());
+
+		table.setPlayersStatusInRoundTo(PlayerStatus.CALLED);
+
+		round.updateRound(table, rules, deck);
+
+		assertEquals(5, one.getHand().getCards().size());
+
+	}
+
+	@Test
+	public void testTwoStreets3Players_player2foldsAfterPreflop() {
+
+		Player one = PlayerCreater.createPlayer("One", PlayerStatus.READY, 100);
+		Player two = PlayerCreater.createPlayer("Two", PlayerStatus.READY, 100);
+		Player three = PlayerCreater.createPlayer("Three", PlayerStatus.READY, 100);
+
+		table.addPLayer(one);
+		table.addPLayer(two);
+		table.addPLayer(three);
+
+		round.start(table, rules, deck, pot);
+
+		assertEquals(2, one.getHand().getCards().size());
+
+		table.setPlayersStatusInRoundTo(PlayerStatus.CALLED);
+
+		two.setPlayerStatus(PlayerStatus.FOLDED);
+
+		round.updateRound(table, rules, deck);
+
+		assertEquals(5, one.getHand().getCards().size());
+		assertEquals(2, two.getHand().getCards().size());
+
+	}
+
 }

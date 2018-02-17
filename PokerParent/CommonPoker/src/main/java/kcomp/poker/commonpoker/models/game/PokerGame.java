@@ -8,6 +8,7 @@ public class PokerGame implements Game {
 
 	RoundContainer roundContainer;
 	Table table;
+	Rules rules;
 
 	@Override
 	public void startGame() {
