@@ -6,7 +6,7 @@ package kcomp.poker.commonpoker.models;
  * Can be used for blinds and limits.
  * 
  */
-public class BetSize {
+public class BetSizes {
 
 	/** The small. */
 	private int small;
@@ -14,7 +14,7 @@ public class BetSize {
 	/** The big. */
 	private int big;
 
-	public BetSize(int small, int big) {
+	public BetSizes(int small, int big) {
 		super();
 		this.small = small;
 		this.big = big;

@@ -2,6 +2,7 @@ package kcomp.poker.commonpoker.models;
 
 import kcomp.poker.commonpoker.enums.PlayerStatus;
 import kcomp.poker.commonpoker.exceptions.ChipException;
+import kcomp.poker.commonpoker.listeners.PlayerGameListener;
 
 public class Player {
 
@@ -9,6 +10,7 @@ public class Player {
 	private int chipCount;
 	private Hand hand;
 	private PlayerStatus playerStatus;
+	private PlayerGameListener playerGameListener;
 
 	public String getUserName() {
 		return userName;
@@ -51,6 +53,14 @@ public class Player {
 			throw new ChipException("Player does not have enough chips: " + numberOfChips);
 		}
 		this.chipCount -= numberOfChips;
+	}
+
+	public PlayerGameListener getPlayerGameListener() {
+		return playerGameListener;
+	}
+
+	public void setPlayerGameListener(PlayerGameListener playerGameListener) {
+		this.playerGameListener = playerGameListener;
 	}
 
 }

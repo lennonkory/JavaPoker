@@ -26,7 +26,7 @@ public class StreetUtil {
 	public static void setToReady(Table table) {
 		for (Player player : table.getAllPlayers()) {
 			PlayerStatus status = player.getPlayerStatus();
-			if (!status.equals(PlayerStatus.FOLDED) || !status.equals(PlayerStatus.SITTING_OUT)) {
+			if (!status.equals(PlayerStatus.FOLDED) && !status.equals(PlayerStatus.SITTING_OUT)) {
 				player.setPlayerStatus(PlayerStatus.READY);
 			}
 		}

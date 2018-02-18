@@ -12,16 +12,13 @@ public class FlopStreet implements Street {
 	@Override
 	public void dealCards(Table table, Deck deck) {
 
-		Player dealer = table.getDealer();
-		Player currentPlayer = null;
+		List<Player> players = table.getPlayersInHand();
 
 		List<Card> flop = deck.getNextCards(3);
 
-		do {
-			currentPlayer = table.getAndSetNextPlayer();
-			currentPlayer.getHand().addFaceUp(flop);
-
-		} while (!currentPlayer.getUserName().equals(dealer.getUserName()));
+		for (Player player : players) {
+			player.getHand().addFaceUp(flop);
+		}
 
 	}
 
@@ -34,6 +31,11 @@ public class FlopStreet implements Street {
 	public void setToReady(Table table) {
 		StreetUtil.setToReady(table);
 
+	}
+
+	@Override
+	public void setCurrentPlayer(Table table) {
+		table.setCurrentPlayer();
 	}
 
 }

@@ -10,6 +10,7 @@ import org.junit.Test;
 
 import kcomp.poker.commonpoker.creators.PlayerCreater;
 import kcomp.poker.commonpoker.enums.PlayerStatus;
+import kcomp.poker.commonpoker.models.BetSizes;
 import kcomp.poker.commonpoker.models.Deck;
 import kcomp.poker.commonpoker.models.Player;
 import kcomp.poker.commonpoker.models.StandardDeck;
@@ -43,7 +44,7 @@ public class TestTexasRound {
 		round = new TexasHoldemRound(streets);
 		table = new PokerTable(SIZE);
 		table.initTable();
-		rules = new TexasRules();
+		rules = new TexasRules(new BetSizes(5, 10), new BetSizes(5, 10), 0);
 		pot = new PokerPot();
 		deck = new StandardDeck();
 	}

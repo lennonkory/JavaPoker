@@ -28,6 +28,7 @@ public class TexasHoldemRound implements Round {
 		currentStreet = streets.poll();
 		currentStreet.dealCards(table, deck);
 		collectBlinds(table, pot, rules);
+		table.getAndSetNextPlayer();
 
 	}
 
@@ -38,6 +39,7 @@ public class TexasHoldemRound implements Round {
 			PlayerStatus status = player.getPlayerStatus();
 			if (!status.equals(PlayerStatus.SITTING_OUT)) {
 				player.setPlayerStatus(PlayerStatus.READY);
+				updatePlayerStatus(table, player, PlayerStatus.READY);
 			}
 		}
 	}
@@ -75,10 +77,26 @@ public class TexasHoldemRound implements Round {
 			if (currentStreet != null) {
 				currentStreet.setToReady(table);
 				currentStreet.dealCards(table, deck);
-
+				currentStreet.setCurrentPlayer(table);
 			}
+		} else {
+			table.getAndSetNextPlayer();
 		}
 
+	}
+
+	private void updatePlayerStatus(Table table, Player player, PlayerStatus playerStatus) {
+		if (player.getPlayerGameListener() == null) {
+			return;
+		}
+
+		player.getPlayerGameListener().updateStatus(playerStatus);
+
+		if (table.getTableGameListener() == null) {
+			return;
+		}
+
+		table.getTableGameListener().updatePlayerStatus(player, playerStatus);
 	}
 
 }

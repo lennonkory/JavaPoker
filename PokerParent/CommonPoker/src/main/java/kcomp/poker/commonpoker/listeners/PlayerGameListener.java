@@ -1,5 +1,6 @@
 package kcomp.poker.commonpoker.listeners;
 
+import kcomp.poker.commonpoker.enums.PlayerStatus;
 import kcomp.poker.commonpoker.view.details.BlindInfo;
 import kcomp.poker.commonpoker.view.details.CardInfo;
 import kcomp.poker.commonpoker.view.details.DisplayInfo;
@@ -45,5 +46,7 @@ public interface PlayerGameListener {
 	 * Updates the Player if they are in the blinds or open.
 	 */
 	void updateBlinds(BlindInfo blindInfo);
+
+	void updateStatus(PlayerStatus playerStatus);
 
 }

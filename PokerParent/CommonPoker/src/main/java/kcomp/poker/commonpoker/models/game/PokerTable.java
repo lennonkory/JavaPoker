@@ -3,8 +3,10 @@ package kcomp.poker.commonpoker.models.game;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.stream.Stream;
 
 import kcomp.poker.commonpoker.enums.PlayerStatus;
+import kcomp.poker.commonpoker.listeners.TableGameListener;
 import kcomp.poker.commonpoker.models.Player;
 
 public class PokerTable implements Table {
@@ -13,6 +15,7 @@ public class PokerTable implements Table {
 	private int numPlayers;
 	private Player currentPlayer;
 	private Player dealer;
+	private TableGameListener tableGameListener;
 
 	private int tableSize;
 
@@ -37,6 +40,11 @@ public class PokerTable implements Table {
 	}
 
 	@Override
+	public void setCurrentPlayerAsDealer() {
+		currentPlayer = dealer;
+	}
+
+	@Override
 	public Player getNextActivePlayerInRound() {
 		int currentDealerLocation = findPlayerLocation(currentPlayer);
 		return findPlayer(currentDealerLocation, PlayerStatus.SITTING_OUT, PlayerStatus.FOLDED);
@@ -51,6 +59,21 @@ public class PokerTable implements Table {
 			if (player != null) {
 				if (isPlayerInStatus(player.getPlayerStatus(), PlayerStatus.CALLED, PlayerStatus.RAISED,
 						PlayerStatus.READY)) {
+					player.setPlayerStatus(playerStatus);
+				}
+
+			}
+		}
+	}
+
+	@Override
+	public void setOtherPlayersStatusInRoundTo(Player currentPlayer, PlayerStatus playerStatus) {
+		for (Seat seat : seats) {
+
+			Player player = seat.getPlayer();
+
+			if (player != null && !player.getUserName().equals(currentPlayer.getUserName())) {
+				if (isPlayerInStatus(PlayerStatus.CALLED, PlayerStatus.READY, PlayerStatus.CHECKED)) {
 					player.setPlayerStatus(playerStatus);
 				}
 
@@ -228,6 +251,50 @@ public class PokerTable implements Table {
 	@Override
 	public Player getPlayerAtSeat(int seatNumber) {
 		return seats.get(seatNumber).getPlayer();
+	}
+
+	@Override
+	public void setTableGameListener(TableGameListener tableGameListener) {
+		this.tableGameListener = tableGameListener;
+	}
+
+	@Override
+	public TableGameListener getTableGameListener() {
+		return tableGameListener;
+	}
+
+	@Override
+	public int getSeatNumberForPlayer(Player player) {
+		Stream<Seat> seat = seats.stream().filter(s -> s.getPlayer().getUserName().equals(player.getUserName()));
+		return seat.findFirst().get().location;
+	}
+
+	@Override
+	public Player getCurrentPlayer() {
+		return currentPlayer;
+	}
+
+	@Override
+	public List<Player> getPlayersInHand() {
+
+		List<Player> inHand = new ArrayList<>();
+		for (Seat seat : seats) {
+			Player player = seat.getPlayer();
+			if (player != null) {
+				if (!isPlayerInStatus(seat.getPlayer().getPlayerStatus(), PlayerStatus.FOLDED,
+						PlayerStatus.SITTING_OUT)) {
+					inHand.add(player);
+				}
+			}
+		}
+
+		return inHand;
+	}
+
+	@Override
+	public void setCurrentPlayer() {
+		int currentDealerLocation = findPlayerLocation(dealer);
+		currentPlayer = findPlayer(currentDealerLocation, PlayerStatus.SITTING_OUT, PlayerStatus.FOLDED);
 	}
 
 }

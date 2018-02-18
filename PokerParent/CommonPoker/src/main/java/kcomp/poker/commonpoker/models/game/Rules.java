@@ -1,6 +1,6 @@
 package kcomp.poker.commonpoker.models.game;
 
-import kcomp.poker.commonpoker.models.BetSize;
+import kcomp.poker.commonpoker.models.BetSizes;
 
 public interface Rules {
 
@@ -20,13 +20,13 @@ public interface Rules {
 	 *
 	 * @return the blinds or opens
 	 */
-	public BetSize getBlindsOrOpens();
+	public BetSizes getBlindsOrOpens();
 
 	/**
 	 * Gets the limits.
 	 *
 	 * @return the limits
 	 */
-	public BetSize getLimits();
+	public BetSizes getLimits();
 
 }

@@ -11,4 +11,6 @@ public interface Street {
 
 	public void setToReady(Table table);
 
+	public void setCurrentPlayer(Table table);
+
 }

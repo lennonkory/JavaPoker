@@ -11,16 +11,14 @@ public class RiverStreet implements Street {
 
 	@Override
 	public void dealCards(Table table, Deck deck) {
-		Player dealer = table.getDealer();
-		Player currentPlayer = null;
 
-		List<Card> flop = deck.getNextCards(3);
+		Card river = deck.getNextCard();
 
-		do {
-			currentPlayer = table.getAndSetNextPlayer();
-			currentPlayer.getHand().addFaceUp(flop);
+		List<Player> players = table.getPlayersInHand();
 
-		} while (!currentPlayer.getUserName().equals(dealer.getUserName()));
+		for (Player player : players) {
+			player.getHand().addFaceUp(river);
+		}
 
 	}
 
@@ -33,5 +31,10 @@ public class RiverStreet implements Street {
 	public void setToReady(Table table) {
 		StreetUtil.setToReady(table);
 
+	}
+
+	@Override
+	public void setCurrentPlayer(Table table) {
+		table.setCurrentPlayer();
 	}
 }

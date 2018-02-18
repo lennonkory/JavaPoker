@@ -97,4 +97,8 @@ public class Hand {
 		return suits;
 	}
 
+	public int numberOfCardsInHand() {
+		return cards.size();
+	}
+
 }

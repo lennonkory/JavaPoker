@@ -3,12 +3,14 @@ package kcomp.poker.commonpoker.models.game;
 import java.util.HashMap;
 import java.util.Map;
 
+import kcomp.poker.commonpoker.listeners.PotGameListener;
 import kcomp.poker.commonpoker.models.Player;
 
 public class PokerPot implements Pot {
 
 	private int potSize;
 	private Map<Player, Integer> playerPotSize;
+	private PotGameListener potGameListener;
 
 	public PokerPot() {
 		potSize = 0;
@@ -27,6 +29,9 @@ public class PokerPot implements Pot {
 		}
 
 		potSize += amount;
+		if (potGameListener != null) {
+			potGameListener.upDatePot(amount);
+		}
 	}
 
 	@Override
@@ -40,6 +45,14 @@ public class PokerPot implements Pot {
 			return playerPotSize.get(player);
 		}
 		return 0;
+	}
+
+	public PotGameListener getPotGameListener() {
+		return potGameListener;
+	}
+
+	public void setPotGameListener(PotGameListener potGameListener) {
+		this.potGameListener = potGameListener;
 	}
 
 }

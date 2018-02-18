@@ -1,5 +1,7 @@
 package kcomp.poker.commonpoker.models.round;
 
+import java.util.List;
+
 import kcomp.poker.commonpoker.models.Card;
 import kcomp.poker.commonpoker.models.Deck;
 import kcomp.poker.commonpoker.models.Player;
@@ -9,16 +11,13 @@ public class TurnStreet implements Street {
 
 	@Override
 	public void dealCards(Table table, Deck deck) {
-		Player dealer = table.getDealer();
-		Player currentPlayer = null;
+		Card river = deck.getNextCard();
 
-		Card turn = deck.getNextCard();
+		List<Player> players = table.getPlayersInHand();
 
-		do {
-			currentPlayer = table.getAndSetNextPlayer();
-			currentPlayer.getHand().addFaceUp(turn);
-
-		} while (!currentPlayer.getUserName().equals(dealer.getUserName()));
+		for (Player player : players) {
+			player.getHand().addFaceUp(river);
+		}
 	}
 
 	@Override
@@ -29,6 +28,12 @@ public class TurnStreet implements Street {
 	@Override
 	public void setToReady(Table table) {
 		StreetUtil.setToReady(table);
+
+	}
+
+	@Override
+	public void setCurrentPlayer(Table table) {
+		table.setCurrentPlayer();
 
 	}
 
