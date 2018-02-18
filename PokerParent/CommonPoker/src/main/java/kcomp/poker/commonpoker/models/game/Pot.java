@@ -1,5 +1,7 @@
 package kcomp.poker.commonpoker.models.game;
 
+import kcomp.poker.commonpoker.listeners.PotGameListener;
+import kcomp.poker.commonpoker.models.BetSize;
 import kcomp.poker.commonpoker.models.Player;
 
 // TODO: Auto-generated Javadoc
@@ -35,4 +37,14 @@ public interface Pot {
 	 * @return the player pot size. If no player pot size return 0.
 	 */
 	public int getPlayerPotSize(Player player);
+
+	void setPotGameListener(PotGameListener potGameListener);
+
+	PotGameListener getPotGameListener();
+
+	void setPlayerBetSizesForStreet(Player player, BetSize betSize);
+
+	BetSize getPlayerBetSizesForStreet(Player player);
+
+	void removePlayerBetSize(Player player);
 }

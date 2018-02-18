@@ -126,6 +126,22 @@ public class TestTexasRules {
 
 	}
 
+	@Test
+	public void betSizeBigShouldBeMinRaiseAmount() {
+
+		currentBetSize.setSmall(10);
+
+		player.setPlayerStatus(PlayerStatus.READY);
+
+		Options options = rules.getOptionForPlayer(player, currentBetSize);
+
+		BetSize betSize = options.getBetSizes();
+
+		assertNotNull(betSize);
+		assertEquals(currentBetSize.getSmall() * 2, betSize.getBig());
+
+	}
+
 	private boolean betTypeInList(List<BetType> betTypes, BetType betTypeToCheck) {
 
 		for (BetType betType : betTypes) {

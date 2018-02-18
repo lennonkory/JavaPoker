@@ -50,7 +50,8 @@ public class TexasRules implements Rules {
 		List<BetType> betTypes = new ArrayList<>();
 		betTypes.add(BetType.FOLD);
 
-		BetSize betSize = new BetSize(Math.min(player.getChipCount(), currentBetSize.getSmall()), -1);
+		BetSize betSize = new BetSize(Math.min(player.getChipCount(), currentBetSize.getSmall()),
+				currentBetSize.getSmall() * 2);
 
 		switch (status) {
 		case BEEN_RAISED:

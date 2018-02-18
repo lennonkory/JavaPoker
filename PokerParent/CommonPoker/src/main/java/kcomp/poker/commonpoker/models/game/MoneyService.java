@@ -2,6 +2,7 @@ package kcomp.poker.commonpoker.models.game;
 
 import java.util.Collection;
 
+import kcomp.poker.commonpoker.models.BetSize;
 import kcomp.poker.commonpoker.models.Player;
 
 public class MoneyService {
@@ -25,14 +26,25 @@ public class MoneyService {
 	public static void collectMoneyAndAddToPot(Player player, int amount, Pot pot) {
 
 		int playerAmount = player.getChipCount();
+		int ammountToAdd = amount;
 
-		if (playerAmount >= amount) {
-			player.subtractChips(amount);
-			pot.addToPot(player, amount, amount);
-		} else {
-			player.subtractChips(playerAmount);
-			pot.addToPot(player, playerAmount, amount);
+		if (playerAmount <= amount) {
+			ammountToAdd = playerAmount;
 		}
+
+		player.subtractChips(ammountToAdd);
+		pot.addToPot(player, ammountToAdd, amount);
+
+		BetSize currentBetSize = pot.getPlayerBetSizesForStreet(player);
+
+		if (currentBetSize == null) {
+			currentBetSize = new BetSize(ammountToAdd, -1);
+		} else {
+			currentBetSize.setSmall(currentBetSize.getSmall() + ammountToAdd);
+		}
+
+		pot.setPlayerBetSizesForStreet(player, currentBetSize);
+
 	}
 
 	public static void addToPlayerChips(Player player, Pot pot) {

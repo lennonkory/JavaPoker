@@ -38,7 +38,7 @@ public class GameFactory {
 		Table table = new PokerTable(DEFAULT_TABLE_SIZE);
 		table.initTable();
 
-		Rules rules = new TexasRules(new BetSize(5, 10), new BetSize(5, 10), 0);
+		Rules rules = new TexasRules(new BetSize(5, 10), new BetSize(10, -1), 0);
 		Deck deck = new StandardDeck();
 		Pot pot = new PokerPot();
 

@@ -9,6 +9,7 @@ import kcomp.poker.commonpoker.creators.PlayerCreater;
 import kcomp.poker.commonpoker.enums.BetType;
 import kcomp.poker.commonpoker.enums.PlayerStatus;
 import kcomp.poker.commonpoker.exceptions.GameAlreadyStartedException;
+import kcomp.poker.commonpoker.exceptions.IncorrectBetSizeException;
 import kcomp.poker.commonpoker.exceptions.NotEnoughPlayersException;
 import kcomp.poker.commonpoker.exceptions.NotPlayersTurnException;
 import kcomp.poker.commonpoker.factory.GameFactory;
@@ -128,13 +129,13 @@ public class TestPokerGame {
 		Command command = new Command();
 		command.setPlayer(four);
 		command.setBetType(BetType.RAISE);
-		command.setBetAmount(10);
+		command.setBetAmount(20);
 
 		game.executeCommand(command);
 
 		Pot pot = game.getPot();
 
-		assertEquals(pot.getPotSize(), 25);
+		assertEquals(pot.getPotSize(), 35);
 		assertEquals(pot.getPlayerPotSize(three), 10);
 		assertEquals(four.getPlayerStatus(), PlayerStatus.RAISED);
 
@@ -165,18 +166,28 @@ public class TestPokerGame {
 
 		setUpGame();
 
-		Command command = new Command();
-		command.setPlayer(four);
-		command.setBetType(BetType.CHECK);
-		command.setBetAmount(10);
-
+		Command command = createCommand(four, BetType.CALL, 10);
 		game.executeCommand(command);
+
+		command = createCommand(one, BetType.CALL, 10);
+		game.executeCommand(command);
+
+		command = createCommand(two, BetType.FOLD, 0);
+		game.executeCommand(command);
+
+		command = createCommand(three, BetType.CHECK, 0);
+		game.executeCommand(command);
+
+		Player currentPlayer = game.getTable().getCurrentPlayer();
+
+		assertEquals(three, currentPlayer);
 
 		Pot pot = game.getPot();
 
-		assertEquals(pot.getPotSize(), 15);
+		assertEquals(35, pot.getPotSize());
 		assertEquals(pot.getPlayerPotSize(three), 10);
-		assertEquals(four.getPlayerStatus(), PlayerStatus.CHECKED);
+		// Because the round moves to the next street player is set to ready
+		assertEquals(three.getPlayerStatus(), PlayerStatus.READY);
 
 	}
 
@@ -274,6 +285,42 @@ public class TestPokerGame {
 		Player currentPlayer = game.getTable().getCurrentPlayer();
 
 		assertEquals(three, currentPlayer);
+
+	}
+
+	@Test
+	public void playerCanCallAfterRaise() {
+
+		setUpGame();
+
+		Command command = createCommand(four, BetType.CALL, 10);
+		game.executeCommand(command);
+
+		command = createCommand(one, BetType.RAISE, 20);
+		game.executeCommand(command);
+
+		command = createCommand(two, BetType.FOLD, 0);
+		game.executeCommand(command);
+
+		command = createCommand(three, BetType.FOLD, 0);
+		game.executeCommand(command);
+
+		Player currentPlayer = game.getTable().getCurrentPlayer();
+
+		assertEquals(four, currentPlayer);
+
+		command = createCommand(four, BetType.CALL, 10);
+		game.executeCommand(command);
+
+	}
+
+	@Test(expected = IncorrectBetSizeException.class)
+	public void playerCallsWrongAmountShouldExcept() {
+
+		setUpGame();
+
+		Command command = createCommand(four, BetType.CALL, 20);
+		game.executeCommand(command);
 
 	}
 

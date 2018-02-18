@@ -3,6 +3,8 @@ package kcomp.poker.commonpoker.models.game;
 import kcomp.poker.commonpoker.enums.BetType;
 import kcomp.poker.commonpoker.enums.PlayerStatus;
 import kcomp.poker.commonpoker.exceptions.GameAlreadyStartedException;
+import kcomp.poker.commonpoker.exceptions.IncorrectBetSizeException;
+import kcomp.poker.commonpoker.exceptions.InvalidCommandException;
 import kcomp.poker.commonpoker.exceptions.NotEnoughPlayersException;
 import kcomp.poker.commonpoker.exceptions.NotPlayersTurnException;
 import kcomp.poker.commonpoker.models.BetSize;
@@ -51,6 +53,8 @@ public class PokerGame implements Game {
 
 		currentRound.start(table, rules, deck, pot);
 
+		currentBetSize = rules.getLimits();
+
 	}
 
 	@Override
@@ -62,12 +66,21 @@ public class PokerGame implements Game {
 			throw new NotPlayersTurnException();
 		}
 
+		validateCommand(command);
+
 		int ammount = command.getBetAmount();
 		BetType betType = command.getBetType();
 		PlayerStatus status = null;
 
 		switch (betType) {
 		case CALL:
+
+			int ammountAdded = pot.getPlayerBetSizesForStreet(player).getSmall();
+
+			if (ammount + ammountAdded != currentBetSize.getSmall()) {
+				throw new IncorrectBetSizeException();
+			}
+
 			MoneyService.collectMoneyAndAddToPot(player, ammount, pot);
 			player.setPlayerStatus(PlayerStatus.CALLED);
 			status = PlayerStatus.CALLED;
@@ -83,11 +96,17 @@ public class PokerGame implements Game {
 		case NONE:
 			break;
 		case RAISE:
+
+			if (ammount * 2 < currentBetSize.getSmall()) {
+				throw new IncorrectBetSizeException();
+			}
+
+			currentBetSize.setSmall(ammount);
+
 			MoneyService.collectMoneyAndAddToPot(player, ammount, pot);
 			status = PlayerStatus.RAISED;
 			player.setPlayerStatus(status);
 			table.setOtherPlayersStatusInRoundTo(player, PlayerStatus.BEEN_RAISED);
-
 			break;
 		default:
 			break;
@@ -95,17 +114,62 @@ public class PokerGame implements Game {
 
 		updatePlayer(player, status);
 		currentRound.updateRound(table, rules, deck);
+
+		if (currentRound.isOver()) {
+			roundIsOver();
+		}
+
 		updateNextPlayer();
+
+	}
+
+	private void validateCommand(Command command) {
+
+		Player player = command.getPlayer();
+		BetType betType = command.getBetType();
+
+		switch (betType) {
+
+		case CHECK:
+			if (player.getPlayerStatus().equals(PlayerStatus.BEEN_RAISED)) {
+				throw new InvalidCommandException("Can not Check if Raised");
+			}
+
+			if (currentBetSize.getSmall() != pot.getPlayerBetSizesForStreet(player).getSmall()) {
+				throw new InvalidCommandException("Can not Check if Raised");
+			}
+
+		default:
+			break;
+		}
+
+	}
+
+	private void roundIsOver() {
+		// Declare winner. Get next round.
+
+		System.out.println("Round is over");
+
+		currentRound = roundContainer.selectRound();
+
+		pot = new PokerPot();
+		deck.shuffle();
+
+		for (Player player : table.getAllPlayers()) {
+			player.setHand(null);
+		}
 
 	}
 
 	@Override
 	public void addPlayer(Player player) {
+		pot.setPlayerBetSizesForStreet(player, new BetSize(0, 0));
 		table.addPLayer(player);
 	}
 
 	@Override
 	public void removePlayer(Player player) {
+		pot.removePlayerBetSize(player);
 		table.removePlayer(player);
 	}
 

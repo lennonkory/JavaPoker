@@ -73,7 +73,8 @@ public class PokerTable implements Table {
 			Player player = seat.getPlayer();
 
 			if (player != null && !player.getUserName().equals(currentPlayer.getUserName())) {
-				if (isPlayerInStatus(PlayerStatus.CALLED, PlayerStatus.READY, PlayerStatus.CHECKED)) {
+				if (isPlayerInStatus(player.getPlayerStatus(), PlayerStatus.CALLED, PlayerStatus.READY,
+						PlayerStatus.CHECKED)) {
 					player.setPlayerStatus(playerStatus);
 				}
 
