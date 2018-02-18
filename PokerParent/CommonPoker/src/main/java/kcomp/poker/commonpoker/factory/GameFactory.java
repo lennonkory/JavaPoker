@@ -3,7 +3,7 @@ package kcomp.poker.commonpoker.factory;
 import java.util.LinkedList;
 import java.util.Queue;
 
-import kcomp.poker.commonpoker.models.BetSizes;
+import kcomp.poker.commonpoker.models.BetSize;
 import kcomp.poker.commonpoker.models.Deck;
 import kcomp.poker.commonpoker.models.StandardDeck;
 import kcomp.poker.commonpoker.models.game.Game;
@@ -11,9 +11,7 @@ import kcomp.poker.commonpoker.models.game.PokerGame;
 import kcomp.poker.commonpoker.models.game.PokerPot;
 import kcomp.poker.commonpoker.models.game.PokerTable;
 import kcomp.poker.commonpoker.models.game.Pot;
-import kcomp.poker.commonpoker.models.game.Rules;
 import kcomp.poker.commonpoker.models.game.Table;
-import kcomp.poker.commonpoker.models.game.TexasRules;
 import kcomp.poker.commonpoker.models.round.FlopStreet;
 import kcomp.poker.commonpoker.models.round.PreFlopStreet;
 import kcomp.poker.commonpoker.models.round.RiverStreet;
@@ -22,6 +20,8 @@ import kcomp.poker.commonpoker.models.round.Street;
 import kcomp.poker.commonpoker.models.round.TexasHoldemRound;
 import kcomp.poker.commonpoker.models.round.TexasHoldemRoundContainer;
 import kcomp.poker.commonpoker.models.round.TurnStreet;
+import kcomp.poker.commonpoker.rules.Rules;
+import kcomp.poker.commonpoker.rules.TexasRules;
 
 public class GameFactory {
 
@@ -38,7 +38,7 @@ public class GameFactory {
 		Table table = new PokerTable(DEFAULT_TABLE_SIZE);
 		table.initTable();
 
-		Rules rules = new TexasRules(new BetSizes(5, 10), new BetSizes(5, 10), 0);
+		Rules rules = new TexasRules(new BetSize(5, 10), new BetSize(5, 10), 0);
 		Deck deck = new StandardDeck();
 		Pot pot = new PokerPot();
 

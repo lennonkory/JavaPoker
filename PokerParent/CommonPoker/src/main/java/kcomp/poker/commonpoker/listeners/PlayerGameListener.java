@@ -1,6 +1,7 @@
 package kcomp.poker.commonpoker.listeners;
 
 import kcomp.poker.commonpoker.enums.PlayerStatus;
+import kcomp.poker.commonpoker.models.game.Options;
 import kcomp.poker.commonpoker.view.details.BlindInfo;
 import kcomp.poker.commonpoker.view.details.CardInfo;
 import kcomp.poker.commonpoker.view.details.DisplayInfo;
@@ -48,5 +49,7 @@ public interface PlayerGameListener {
 	void updateBlinds(BlindInfo blindInfo);
 
 	void updateStatus(PlayerStatus playerStatus);
+
+	void updateOptions(Options options);
 
 }

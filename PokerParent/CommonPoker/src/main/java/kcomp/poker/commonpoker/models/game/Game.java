@@ -3,6 +3,7 @@ package kcomp.poker.commonpoker.models.game;
 import kcomp.poker.commonpoker.exceptions.GameAlreadyStartedException;
 import kcomp.poker.commonpoker.exceptions.NotEnoughPlayersException;
 import kcomp.poker.commonpoker.models.Player;
+import kcomp.poker.commonpoker.rules.Rules;
 
 public interface Game {
 
@@ -18,6 +19,8 @@ public interface Game {
 	public void startGame() throws NotEnoughPlayersException, GameAlreadyStartedException;
 
 	public void executeCommand(Command command);
+
+	public Options getOptionsForPlayer(Player player);
 
 	public void addPlayer(Player player);
 

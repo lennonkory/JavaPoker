@@ -5,10 +5,12 @@ import kcomp.poker.commonpoker.enums.PlayerStatus;
 import kcomp.poker.commonpoker.exceptions.GameAlreadyStartedException;
 import kcomp.poker.commonpoker.exceptions.NotEnoughPlayersException;
 import kcomp.poker.commonpoker.exceptions.NotPlayersTurnException;
+import kcomp.poker.commonpoker.models.BetSize;
 import kcomp.poker.commonpoker.models.Deck;
 import kcomp.poker.commonpoker.models.Player;
 import kcomp.poker.commonpoker.models.round.Round;
 import kcomp.poker.commonpoker.models.round.RoundContainer;
+import kcomp.poker.commonpoker.rules.Rules;
 
 public class PokerGame implements Game {
 
@@ -20,6 +22,7 @@ public class PokerGame implements Game {
 
 	private boolean isStarted = false;
 	private Round currentRound;
+	private BetSize currentBetSize;
 
 	public PokerGame(RoundContainer roundContainer, Table table, Rules rules, Deck deck, Pot pot) {
 		this.roundContainer = roundContainer;
@@ -27,6 +30,7 @@ public class PokerGame implements Game {
 		this.rules = rules;
 		this.deck = deck;
 		this.pot = pot;
+		currentBetSize = new BetSize(0, 0);
 
 	}
 
@@ -82,7 +86,7 @@ public class PokerGame implements Game {
 			MoneyService.collectMoneyAndAddToPot(player, ammount, pot);
 			status = PlayerStatus.RAISED;
 			player.setPlayerStatus(status);
-			table.setOtherPlayersStatusInRoundTo(player, status);
+			table.setOtherPlayersStatusInRoundTo(player, PlayerStatus.BEEN_RAISED);
 
 			break;
 		default:
@@ -91,6 +95,7 @@ public class PokerGame implements Game {
 
 		updatePlayer(player, status);
 		currentRound.updateRound(table, rules, deck);
+		updateNextPlayer();
 
 	}
 
@@ -124,6 +129,25 @@ public class PokerGame implements Game {
 			return;
 		}
 		player.getPlayerGameListener().updateStatus(playerStatus);
+	}
+
+	private void updateNextPlayer() {
+		Player player = table.getCurrentPlayer();
+
+		if (player.getPlayerGameListener() == null) {
+			return;
+		}
+		player.getPlayerGameListener().updateOptions(rules.getOptionForPlayer(player, currentBetSize));
+	}
+
+	@Override
+	public Options getOptionsForPlayer(Player player) {
+
+		if (!player.equals(table.getCurrentPlayer())) {
+			throw new NotPlayersTurnException();
+		}
+
+		return null;
 	}
 
 }

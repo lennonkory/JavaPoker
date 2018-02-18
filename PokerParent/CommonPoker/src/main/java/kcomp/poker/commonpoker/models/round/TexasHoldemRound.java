@@ -8,8 +8,8 @@ import kcomp.poker.commonpoker.models.Deck;
 import kcomp.poker.commonpoker.models.Player;
 import kcomp.poker.commonpoker.models.game.MoneyService;
 import kcomp.poker.commonpoker.models.game.Pot;
-import kcomp.poker.commonpoker.models.game.Rules;
 import kcomp.poker.commonpoker.models.game.Table;
+import kcomp.poker.commonpoker.rules.Rules;
 
 public class TexasHoldemRound implements Round {
 
