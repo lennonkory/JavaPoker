@@ -20,7 +20,7 @@ public interface Pot {
 	 * @param amount
 	 *            the amount
 	 */
-	public void addToPot(Player player, int playerAmount, int potAmount);
+	public void addToPot(Player player, int potAmount);
 
 	/**
 	 * Gets the pot size.

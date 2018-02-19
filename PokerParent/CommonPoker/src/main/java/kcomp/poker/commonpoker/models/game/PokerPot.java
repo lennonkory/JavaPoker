@@ -21,20 +21,14 @@ public class PokerPot implements Pot {
 	}
 
 	@Override
-	public void addToPot(Player player, int playerAmount, int amount) {
-
-		if (playerPotSize.containsKey(player)) {
-			Integer playerAmountOld = playerPotSize.get(player);
-			playerAmountOld += playerAmount;
-			playerPotSize.put(player, playerAmount);
-		} else {
-			playerPotSize.put(player, playerAmount);
-		}
+	public void addToPot(Player player, int amount) {
 
 		potSize += amount;
+
 		if (potGameListener != null) {
 			potGameListener.upDatePot(amount);
 		}
+
 	}
 
 	@Override
@@ -45,6 +39,7 @@ public class PokerPot implements Pot {
 	@Override
 	public int getPlayerPotSize(Player player) {
 		if (playerPotSize.containsKey(player)) {
+			int value = playerPotSize.get(player);
 			return playerPotSize.get(player);
 		}
 		return 0;
@@ -73,5 +68,9 @@ public class PokerPot implements Pot {
 	@Override
 	public void removePlayerBetSize(Player player) {
 		playerBetSizes.remove(player);
+	}
+
+	private class SidePot {
+
 	}
 }

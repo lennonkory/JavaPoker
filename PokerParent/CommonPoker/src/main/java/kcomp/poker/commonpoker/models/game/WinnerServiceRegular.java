@@ -4,8 +4,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
-
 import kcomp.poker.commonpoker.exceptions.HandRankException;
 import kcomp.poker.commonpoker.models.Hand;
 import kcomp.poker.commonpoker.models.Player;
@@ -14,8 +12,11 @@ import kcomp.poker.commonpoker.rankranker.RankHand;
 
 public class WinnerServiceRegular implements WinnerService {
 
-	@Autowired
 	RankHand rankHand;
+
+	public WinnerServiceRegular(RankHand rankHand) {
+		this.rankHand = rankHand;
+	}
 
 	@Override
 	public Collection<Player> determineWinners(Table table) throws HandRankException {
@@ -24,7 +25,7 @@ public class WinnerServiceRegular implements WinnerService {
 
 		HandValue bestHand = null;
 
-		for (Player player : table.getAllPlayers()) {
+		for (Player player : table.getPlayersInHand()) {
 
 			Hand hand = player.getHand();
 			HandValue handValue = rankHand.rankHand(hand);

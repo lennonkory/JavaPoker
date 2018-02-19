@@ -12,6 +12,7 @@ import kcomp.poker.commonpoker.creators.HandCreator;
 import kcomp.poker.commonpoker.creators.PlayerCreater;
 import kcomp.poker.commonpoker.enums.PlayerStatus;
 import kcomp.poker.commonpoker.exceptions.HandRankException;
+import kcomp.poker.commonpoker.factory.RankHandFactory;
 import kcomp.poker.commonpoker.models.Hand;
 import kcomp.poker.commonpoker.models.Player;
 import kcomp.poker.commonpoker.rankranker.FlushRanker;
@@ -26,7 +27,7 @@ import kcomp.poker.commonpoker.rankranker.TwoPairRanker;
 
 public class TestWinnerService {
 
-	private WinnerServiceRegular winnerService = new WinnerServiceRegular();
+	private WinnerServiceRegular winnerService;
 	private Table table;
 	private static final int SIZE = 9;
 
@@ -35,6 +36,8 @@ public class TestWinnerService {
 		winnerService.rankHand = setRankHand();
 		table = new PokerTable(SIZE);
 		table.initTable();
+		RankHand rankHand = RankHandFactory.createPokerRankHand();
+		winnerService = new WinnerServiceRegular(rankHand);
 
 	}
 
@@ -138,8 +141,8 @@ public class TestWinnerService {
 
 		Pot pot = new PokerPot();
 
-		pot.addToPot(one, 10, 10);
-		pot.addToPot(two, 5, 10);
+		pot.addToPot(one, 10);
+		pot.addToPot(two, 5);
 
 		winnerService.payWinners(winners, pot);
 

@@ -1,6 +1,6 @@
 package kcomp.poker.commonpoker.exceptions;
 
-public class HandRankException extends Exception {
+public class HandRankException extends RuntimeException {
 
 	private static final long serialVersionUID = 1L;
 

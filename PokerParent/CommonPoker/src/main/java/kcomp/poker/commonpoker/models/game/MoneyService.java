@@ -33,7 +33,8 @@ public class MoneyService {
 		}
 
 		player.subtractChips(ammountToAdd);
-		pot.addToPot(player, ammountToAdd, amount);
+
+		pot.addToPot(player, ammountToAdd);
 
 		BetSize currentBetSize = pot.getPlayerBetSizesForStreet(player);
 

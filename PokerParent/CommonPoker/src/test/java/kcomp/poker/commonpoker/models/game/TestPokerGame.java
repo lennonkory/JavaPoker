@@ -116,7 +116,6 @@ public class TestPokerGame {
 		Pot pot = game.getPot();
 
 		assertEquals(pot.getPotSize(), 25);
-		assertEquals(pot.getPlayerPotSize(three), 10);
 		assertEquals(four.getPlayerStatus(), PlayerStatus.CALLED);
 
 	}
@@ -136,7 +135,7 @@ public class TestPokerGame {
 		Pot pot = game.getPot();
 
 		assertEquals(pot.getPotSize(), 35);
-		assertEquals(pot.getPlayerPotSize(three), 10);
+		assertEquals(35, pot.getPlayerPotSize(four));
 		assertEquals(four.getPlayerStatus(), PlayerStatus.RAISED);
 
 	}
@@ -156,7 +155,6 @@ public class TestPokerGame {
 		Pot pot = game.getPot();
 
 		assertEquals(pot.getPotSize(), 15);
-		assertEquals(pot.getPlayerPotSize(three), 10);
 		assertEquals(four.getPlayerStatus(), PlayerStatus.FOLDED);
 
 	}
@@ -185,7 +183,6 @@ public class TestPokerGame {
 		Pot pot = game.getPot();
 
 		assertEquals(35, pot.getPotSize());
-		assertEquals(pot.getPlayerPotSize(three), 10);
 		// Because the round moves to the next street player is set to ready
 		assertEquals(three.getPlayerStatus(), PlayerStatus.READY);
 
@@ -210,7 +207,7 @@ public class TestPokerGame {
 		Pot pot = game.getPot();
 
 		assertEquals(pot.getPotSize(), 40);
-		assertEquals(pot.getPlayerPotSize(three), 10);
+		assertEquals(10, pot.getPlayerPotSize(three));
 		assertEquals(four.getPlayerStatus(), PlayerStatus.READY);
 		assertEquals(5, two.getHand().numberOfCardsInHand());
 
@@ -311,6 +308,66 @@ public class TestPokerGame {
 
 		command = createCommand(four, BetType.CALL, 10);
 		game.executeCommand(command);
+
+	}
+
+	@Test
+	public void aWinnerCanBeSelected() {
+
+		setUpGame();
+
+		// PreFlop
+		Command command = createCommand(four, BetType.CALL, 10);
+		game.executeCommand(command);
+
+		command = createCommand(one, BetType.RAISE, 20);
+		game.executeCommand(command);
+
+		command = createCommand(two, BetType.FOLD, 0);
+		game.executeCommand(command);
+
+		command = createCommand(three, BetType.FOLD, 0);
+		game.executeCommand(command);
+
+		Player currentPlayer = game.getTable().getCurrentPlayer();
+
+		assertEquals(four, currentPlayer);
+
+		command = createCommand(four, BetType.CALL, 10);
+		game.executeCommand(command);
+
+		currentPlayer = game.getTable().getCurrentPlayer();
+
+		assertEquals(four, currentPlayer);
+
+		// Flop
+		command = createCommand(four, BetType.CHECK, 0);
+		game.executeCommand(command);
+
+		command = createCommand(one, BetType.CHECK, 0);
+		game.executeCommand(command);
+
+		currentPlayer = game.getTable().getCurrentPlayer();
+
+		assertEquals(four, currentPlayer);
+
+		// Turn
+		command = createCommand(four, BetType.CHECK, 0);
+		game.executeCommand(command);
+
+		command = createCommand(one, BetType.CHECK, 0);
+		game.executeCommand(command);
+
+		// River
+		command = createCommand(four, BetType.CHECK, 0);
+		game.executeCommand(command);
+
+		command = createCommand(one, BetType.CHECK, 0);
+		game.executeCommand(command);
+
+		Pot pot = game.getPot();
+
+		assertEquals(0, pot.getPotSize());
 
 	}
 

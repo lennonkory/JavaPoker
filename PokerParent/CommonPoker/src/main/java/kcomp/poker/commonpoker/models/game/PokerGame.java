@@ -1,5 +1,7 @@
 package kcomp.poker.commonpoker.models.game;
 
+import java.util.Collection;
+
 import kcomp.poker.commonpoker.enums.BetType;
 import kcomp.poker.commonpoker.enums.PlayerStatus;
 import kcomp.poker.commonpoker.exceptions.GameAlreadyStartedException;
@@ -25,13 +27,16 @@ public class PokerGame implements Game {
 	private boolean isStarted = false;
 	private Round currentRound;
 	private BetSize currentBetSize;
+	private WinnerService winnerService;
 
-	public PokerGame(RoundContainer roundContainer, Table table, Rules rules, Deck deck, Pot pot) {
+	public PokerGame(RoundContainer roundContainer, Table table, Rules rules, Deck deck, Pot pot,
+			WinnerService winnerService) {
 		this.roundContainer = roundContainer;
 		this.table = table;
 		this.rules = rules;
 		this.deck = deck;
 		this.pot = pot;
+		this.winnerService = winnerService;
 		currentBetSize = new BetSize(0, 0);
 
 	}
@@ -148,7 +153,8 @@ public class PokerGame implements Game {
 	private void roundIsOver() {
 		// Declare winner. Get next round.
 
-		System.out.println("Round is over");
+		Collection<Player> winners = winnerService.determineWinners(table);
+		winnerService.payWinners(winners, pot);
 
 		currentRound = roundContainer.selectRound();
 

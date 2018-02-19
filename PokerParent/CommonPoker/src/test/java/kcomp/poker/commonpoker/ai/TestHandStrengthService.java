@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import kcomp.poker.commonpoker.enums.Rank;
@@ -18,6 +19,7 @@ import kcomp.poker.commonpoker.models.Hand;
 import kcomp.poker.commonpoker.models.StandardDeck;
 import kcomp.poker.commonpoker.rankranker.RankHand;
 
+@Ignore("These tests take too long. However they should be run if any changes are made to ranking")
 public class TestHandStrengthService {
 
 	HandStrengthService handStrengthService;
