@@ -14,6 +14,7 @@ import kcomp.poker.commonpoker.exceptions.NotEnoughPlayersException;
 import kcomp.poker.commonpoker.exceptions.NotPlayersTurnException;
 import kcomp.poker.commonpoker.factory.GameFactory;
 import kcomp.poker.commonpoker.models.Player;
+import kcomp.poker.commonpoker.testarea.Pot;
 
 public class TestPokerGame {
 
@@ -115,7 +116,7 @@ public class TestPokerGame {
 
 		Pot pot = game.getPot();
 
-		assertEquals(pot.getPotSize(), 25);
+		assertEquals(pot.getMainPotSize(), 25);
 		assertEquals(four.getPlayerStatus(), PlayerStatus.CALLED);
 
 	}
@@ -134,8 +135,7 @@ public class TestPokerGame {
 
 		Pot pot = game.getPot();
 
-		assertEquals(pot.getPotSize(), 35);
-		assertEquals(35, pot.getPlayerPotSize(four));
+		assertEquals(pot.getMainPotSize(), 35);
 		assertEquals(four.getPlayerStatus(), PlayerStatus.RAISED);
 
 	}
@@ -154,7 +154,7 @@ public class TestPokerGame {
 
 		Pot pot = game.getPot();
 
-		assertEquals(pot.getPotSize(), 15);
+		assertEquals(pot.getMainPotSize(), 15);
 		assertEquals(four.getPlayerStatus(), PlayerStatus.FOLDED);
 
 	}
@@ -182,7 +182,7 @@ public class TestPokerGame {
 
 		Pot pot = game.getPot();
 
-		assertEquals(35, pot.getPotSize());
+		assertEquals(35, pot.getMainPotSize());
 		// Because the round moves to the next street player is set to ready
 		assertEquals(three.getPlayerStatus(), PlayerStatus.READY);
 
@@ -206,8 +206,7 @@ public class TestPokerGame {
 		game.executeCommand(command);
 		Pot pot = game.getPot();
 
-		assertEquals(pot.getPotSize(), 40);
-		assertEquals(10, pot.getPlayerPotSize(three));
+		assertEquals(pot.getMainPotSize(), 40);
 		assertEquals(four.getPlayerStatus(), PlayerStatus.READY);
 		assertEquals(5, two.getHand().numberOfCardsInHand());
 
@@ -231,8 +230,7 @@ public class TestPokerGame {
 		game.executeCommand(command);
 		Pot pot = game.getPot();
 
-		assertEquals(pot.getPotSize(), 30);
-		assertEquals(pot.getPlayerPotSize(three), 10);
+		assertEquals(pot.getMainPotSize(), 30);
 		assertEquals(four.getPlayerStatus(), PlayerStatus.READY);
 		assertEquals(5, two.getHand().numberOfCardsInHand());
 		assertEquals(2, one.getHand().numberOfCardsInHand());
@@ -362,12 +360,16 @@ public class TestPokerGame {
 		command = createCommand(four, BetType.CHECK, 0);
 		game.executeCommand(command);
 
+		Pot pot = game.getPot();
+		assertEquals(55, pot.getMainPotSize());
+
 		command = createCommand(one, BetType.CHECK, 0);
 		game.executeCommand(command);
 
-		Pot pot = game.getPot();
+		pot = game.getPot();
 
-		assertEquals(0, pot.getPotSize());
+		// Antees from next round
+		assertEquals(15, pot.getMainPotSize());
 
 	}
 

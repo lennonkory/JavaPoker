@@ -4,6 +4,7 @@ import kcomp.poker.commonpoker.exceptions.GameAlreadyStartedException;
 import kcomp.poker.commonpoker.exceptions.NotEnoughPlayersException;
 import kcomp.poker.commonpoker.models.Player;
 import kcomp.poker.commonpoker.rules.Rules;
+import kcomp.poker.commonpoker.testarea.Pot;
 
 public interface Game {
 

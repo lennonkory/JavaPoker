@@ -5,7 +5,10 @@ import static org.junit.Assert.assertEquals;
 import org.junit.Before;
 import org.junit.Test;
 
+import kcomp.poker.commonpoker.enums.BetType;
 import kcomp.poker.commonpoker.models.Player;
+import kcomp.poker.commonpoker.testarea.PokerPot;
+import kcomp.poker.commonpoker.testarea.Pot;
 
 public class TestMoneyService {
 
@@ -25,10 +28,9 @@ public class TestMoneyService {
 	public void test_collectChipsWithMorePlayerChips() {
 
 		player.setChipCount(20);
-		MoneyService.collectMoneyAndAddToPot(player, 10, pot);
+		MoneyService.collectMoneyAndAddToPot(player, BetType.CALL, 10, pot);
 
-		assertEquals(10, pot.getPotSize());
-		assertEquals(10, pot.getPlayerPotSize(player));
+		assertEquals(10, pot.getMainPotSize());
 		assertEquals(10, player.getChipCount());
 
 	}
@@ -37,18 +39,10 @@ public class TestMoneyService {
 	public void test_collectChipsWithLessPlayerChips() {
 
 		player.setChipCount(10);
-		MoneyService.collectMoneyAndAddToPot(player, 20, pot);
+		MoneyService.collectMoneyAndAddToPot(player, BetType.CALL, 20, pot);
 
-		assertEquals(20, pot.getPotSize());
-		assertEquals(10, pot.getPlayerPotSize(player));
+		assertEquals(10, pot.getMainPotSize());
 		assertEquals(0, player.getChipCount());
-
-	}
-
-	@Test
-	public void testSizePotsAllMoreChips() {
-
-		Table table = new PokerTable(9);
 
 	}
 

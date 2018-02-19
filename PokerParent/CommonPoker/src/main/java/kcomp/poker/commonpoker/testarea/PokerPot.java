@@ -9,14 +9,15 @@ import java.util.Map.Entry;
 
 import kcomp.poker.commonpoker.models.Player;
 
-public class TestPokerPot implements TestPot {
+public class PokerPot implements Pot {
 
 	private int mainPotAmount;
+	private int beforeNextStreetAmount = 0;
 	private List<SidePot> sidePots;
 	private int streetBet = 0;
 	private Map<Player, Integer> playerBets;
 
-	public TestPokerPot() {
+	public PokerPot() {
 		mainPotAmount = 0;
 		playerBets = new HashMap<>();
 		sidePots = new ArrayList<>();
@@ -69,21 +70,16 @@ public class TestPokerPot implements TestPot {
 
 	@Override
 	public void setPotForNextStreet() {
+
+		beforeNextStreetAmount = mainPotAmount;
 		streetBet = 0;
+
 		playerBets = new HashMap<>();
+
 	}
 
 	@Override
-	public int getPlayerBetForStreet(Player player) {
-		return playerBets.get(player) == null ? 0 : playerBets.get(player);
-	}
-
-	@Override
-	public int getStreetBet() {
-		return streetBet;
-	}
-
-	public void createSidePots() {
+	public void finalSidePot() {
 
 		if (playerBets.isEmpty()) {
 			return;
@@ -103,19 +99,53 @@ public class TestPokerPot implements TestPot {
 
 		int firstAmount = first.getAmount();
 
+		testSide(sides, sidePot, firstAmount, beforeNextStreetAmount);
+
+	}
+
+	@Override
+	public void playerIsAllIn() {
+
+		List<Side> sides = new ArrayList<>();
+
+		for (Entry<Player, Integer> entry : playerBets.entrySet()) {
+			sides.add(new Side(entry.getKey(), entry.getValue()));
+		}
+
+		Collections.sort(sides);
+
+		SidePot sidePot = new SidePot();
+
+		Side first = sides.get(0);
+
+		int firstAmount = first.getAmount();
+
+		testSide(sides, sidePot, firstAmount, beforeNextStreetAmount);
+
+	}
+
+	private void testSide(List<Side> sides, SidePot sidePot, int amount, int extra) {
 		for (Side side : sides) {
 			sidePot.addPlayer(side.getPlayer());
-			sidePot.addToAmount(firstAmount);
+			sidePot.addToAmount(amount + extra);
 			int sideAmount = playerBets.get(side.getPlayer());
-			sideAmount -= firstAmount;
+			sideAmount -= amount;
 			playerBets.put(side.getPlayer(), sideAmount);
 			if (playerBets.get(side.getPlayer()) == 0) {
 				playerBets.remove(side.getPlayer());
 			}
 		}
 		sidePots.add(sidePot);
+	}
 
-		createSidePots();
+	@Override
+	public int getPlayerBetForStreet(Player player) {
+		return playerBets.get(player) == null ? 0 : playerBets.get(player);
+	}
+
+	@Override
+	public int getStreetBet() {
+		return streetBet;
 	}
 
 	private class Side implements Comparable<Side> {
@@ -125,10 +155,6 @@ public class TestPokerPot implements TestPot {
 
 		public int getAmount() {
 			return amount;
-		}
-
-		public void setAmount(int amount) {
-			this.amount = amount;
 		}
 
 		Side(Player player, int amount) {
@@ -149,6 +175,11 @@ public class TestPokerPot implements TestPot {
 
 			return this.amount - o.getAmount();
 		}
+	}
+
+	@Override
+	public void playerFolded(Player player) {
+		playerBets.remove(player);
 	}
 
 }

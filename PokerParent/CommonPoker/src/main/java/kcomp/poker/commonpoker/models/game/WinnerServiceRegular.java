@@ -9,6 +9,7 @@ import kcomp.poker.commonpoker.models.Hand;
 import kcomp.poker.commonpoker.models.Player;
 import kcomp.poker.commonpoker.models.handvalue.HandValue;
 import kcomp.poker.commonpoker.rankranker.RankHand;
+import kcomp.poker.commonpoker.testarea.SidePot;
 
 public class WinnerServiceRegular implements WinnerService {
 
@@ -46,9 +47,11 @@ public class WinnerServiceRegular implements WinnerService {
 	}
 
 	@Override
-	public void payWinners(Collection<Player> winners, Pot pot) {
+	public void payWinners(Collection<Player> winners, SidePot pot) {
 		for (Player player : winners) {
-			MoneyService.addToPlayerChips(player, pot);
+			if (pot.isPlayerInPot(player)) {
+				player.addChips(pot.getAmount());
+			}
 		}
 
 	}

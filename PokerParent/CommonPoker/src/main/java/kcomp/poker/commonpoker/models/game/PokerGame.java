@@ -1,6 +1,7 @@
 package kcomp.poker.commonpoker.models.game;
 
 import java.util.Collection;
+import java.util.List;
 
 import kcomp.poker.commonpoker.enums.BetType;
 import kcomp.poker.commonpoker.enums.PlayerStatus;
@@ -15,6 +16,9 @@ import kcomp.poker.commonpoker.models.Player;
 import kcomp.poker.commonpoker.models.round.Round;
 import kcomp.poker.commonpoker.models.round.RoundContainer;
 import kcomp.poker.commonpoker.rules.Rules;
+import kcomp.poker.commonpoker.testarea.SidePot;
+import kcomp.poker.commonpoker.testarea.PokerPot;
+import kcomp.poker.commonpoker.testarea.Pot;
 
 public class PokerGame implements Game {
 
@@ -79,14 +83,13 @@ public class PokerGame implements Game {
 
 		switch (betType) {
 		case CALL:
-
-			int ammountAdded = pot.getPlayerBetSizesForStreet(player).getSmall();
+			int ammountAdded = pot.getPlayerBetForStreet(player);
 
 			if (ammount + ammountAdded != currentBetSize.getSmall()) {
 				throw new IncorrectBetSizeException();
 			}
 
-			MoneyService.collectMoneyAndAddToPot(player, ammount, pot);
+			MoneyService.collectMoneyAndAddToPot(player, betType, ammount, pot);
 			player.setPlayerStatus(PlayerStatus.CALLED);
 			status = PlayerStatus.CALLED;
 			break;
@@ -97,6 +100,7 @@ public class PokerGame implements Game {
 		case FOLD:
 			player.setPlayerStatus(PlayerStatus.FOLDED);
 			status = PlayerStatus.FOLDED;
+			pot.playerFolded(player);
 			break;
 		case NONE:
 			break;
@@ -108,7 +112,7 @@ public class PokerGame implements Game {
 
 			currentBetSize.setSmall(ammount);
 
-			MoneyService.collectMoneyAndAddToPot(player, ammount, pot);
+			MoneyService.collectMoneyAndAddToPot(player, betType, ammount, pot);
 			status = PlayerStatus.RAISED;
 			player.setPlayerStatus(status);
 			table.setOtherPlayersStatusInRoundTo(player, PlayerStatus.BEEN_RAISED);
@@ -118,7 +122,14 @@ public class PokerGame implements Game {
 		}
 
 		updatePlayer(player, status);
-		currentRound.updateRound(table, rules, deck);
+		boolean update = currentRound.updateRound(table, rules, deck);
+
+		if (update) {
+
+			pot.setPotForNextStreet();
+			currentBetSize.setSmall(0);
+			currentBetSize.setBig(0);
+		}
 
 		if (currentRound.isOver()) {
 			roundIsOver();
@@ -140,7 +151,7 @@ public class PokerGame implements Game {
 				throw new InvalidCommandException("Can not Check if Raised");
 			}
 
-			if (currentBetSize.getSmall() != pot.getPlayerBetSizesForStreet(player).getSmall()) {
+			if (currentBetSize.getSmall() != pot.getPlayerBetForStreet(player)) {
 				throw new InvalidCommandException("Can not Check if Raised");
 			}
 
@@ -153,8 +164,14 @@ public class PokerGame implements Game {
 	private void roundIsOver() {
 		// Declare winner. Get next round.
 
+		pot.finalSidePot();
+
 		Collection<Player> winners = winnerService.determineWinners(table);
-		winnerService.payWinners(winners, pot);
+		List<SidePot> sidePots = pot.getSidePots();
+
+		for (SidePot sidePot : sidePots) {
+			winnerService.payWinners(winners, sidePot);
+		}
 
 		currentRound = roundContainer.selectRound();
 
@@ -165,17 +182,18 @@ public class PokerGame implements Game {
 			player.setHand(null);
 		}
 
+		currentRound.start(table, rules, deck, pot);
+
 	}
 
 	@Override
 	public void addPlayer(Player player) {
-		pot.setPlayerBetSizesForStreet(player, new BetSize(0, 0));
 		table.addPLayer(player);
 	}
 
 	@Override
 	public void removePlayer(Player player) {
-		pot.removePlayerBetSize(player);
+
 		table.removePlayer(player);
 	}
 

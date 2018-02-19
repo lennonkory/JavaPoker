@@ -14,9 +14,7 @@ import kcomp.poker.commonpoker.models.BetSize;
 import kcomp.poker.commonpoker.models.Deck;
 import kcomp.poker.commonpoker.models.Player;
 import kcomp.poker.commonpoker.models.StandardDeck;
-import kcomp.poker.commonpoker.models.game.PokerPot;
 import kcomp.poker.commonpoker.models.game.PokerTable;
-import kcomp.poker.commonpoker.models.game.Pot;
 import kcomp.poker.commonpoker.models.game.Table;
 import kcomp.poker.commonpoker.models.round.FlopStreet;
 import kcomp.poker.commonpoker.models.round.PreFlopStreet;
@@ -24,6 +22,8 @@ import kcomp.poker.commonpoker.models.round.Street;
 import kcomp.poker.commonpoker.models.round.TexasHoldemRound;
 import kcomp.poker.commonpoker.rules.Rules;
 import kcomp.poker.commonpoker.rules.TexasRules;
+import kcomp.poker.commonpoker.testarea.PokerPot;
+import kcomp.poker.commonpoker.testarea.Pot;
 
 public class TestTexasRound {
 

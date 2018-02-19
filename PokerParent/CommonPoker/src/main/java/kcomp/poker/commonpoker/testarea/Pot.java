@@ -4,7 +4,7 @@ import java.util.List;
 
 import kcomp.poker.commonpoker.models.Player;
 
-public interface TestPot {
+public interface Pot {
 
 	int getMainPotSize();
 
@@ -19,5 +19,11 @@ public interface TestPot {
 	int getPlayerBetForStreet(Player player);
 
 	int getStreetBet();
+
+	void playerFolded(Player player);
+
+	void playerIsAllIn();
+
+	void finalSidePot();
 
 }

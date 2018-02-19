@@ -24,6 +24,9 @@ import kcomp.poker.commonpoker.rankranker.StraightFlushRanker;
 import kcomp.poker.commonpoker.rankranker.StraightRanker;
 import kcomp.poker.commonpoker.rankranker.ThreeOfAKindRanker;
 import kcomp.poker.commonpoker.rankranker.TwoPairRanker;
+import kcomp.poker.commonpoker.testarea.SidePot;
+import kcomp.poker.commonpoker.testarea.PokerPot;
+import kcomp.poker.commonpoker.testarea.Pot;
 
 public class TestWinnerService {
 
@@ -33,11 +36,12 @@ public class TestWinnerService {
 
 	@Before
 	public void init() {
-		winnerService.rankHand = setRankHand();
+
 		table = new PokerTable(SIZE);
 		table.initTable();
 		RankHand rankHand = RankHandFactory.createPokerRankHand();
 		winnerService = new WinnerServiceRegular(rankHand);
+		winnerService.rankHand = setRankHand();
 
 	}
 
@@ -141,13 +145,16 @@ public class TestWinnerService {
 
 		Pot pot = new PokerPot();
 
-		pot.addToPot(one, 10);
-		pot.addToPot(two, 5);
+		pot.addCallToPot(one, 10);
+		pot.addCallToPot(two, 10);
 
-		winnerService.payWinners(winners, pot);
+		pot.finalSidePot();
+		List<SidePot> sidePots = pot.getSidePots();
 
-		assertEquals(110, one.getChipCount());
-		assertEquals(105, two.getChipCount());
+		winnerService.payWinners(winners, sidePots.get(0));
+
+		assertEquals(120, one.getChipCount());
+		assertEquals(120, two.getChipCount());
 
 	}
 

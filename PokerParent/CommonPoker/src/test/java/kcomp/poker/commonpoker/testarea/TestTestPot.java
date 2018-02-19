@@ -12,11 +12,11 @@ import kcomp.poker.commonpoker.models.Player;
 
 public class TestTestPot {
 
-	private TestPokerPot pot;
+	private PokerPot pot;
 
 	@Before
 	public void init() {
-		pot = new TestPokerPot();
+		pot = new PokerPot();
 	}
 
 	@Test
@@ -138,7 +138,7 @@ public class TestTestPot {
 		pot.addCallToPot(player2, 10);
 		pot.addCallToPot(player3, 10);
 
-		pot.createSidePots();
+		pot.finalSidePot();
 
 		List<SidePot> sidePots = pot.getSidePots();
 
@@ -168,7 +168,9 @@ public class TestTestPot {
 		assertEquals(40, pot.getStreetBet());
 		assertEquals(110, pot.getMainPotSize());
 
-		pot.createSidePots();
+		pot.playerIsAllIn();
+		pot.playerIsAllIn();
+		pot.finalSidePot();
 
 		List<SidePot> sidePots = pot.getSidePots();
 

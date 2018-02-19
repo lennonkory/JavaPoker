@@ -2,8 +2,9 @@ package kcomp.poker.commonpoker.models.game;
 
 import java.util.Collection;
 
-import kcomp.poker.commonpoker.models.BetSize;
+import kcomp.poker.commonpoker.enums.BetType;
 import kcomp.poker.commonpoker.models.Player;
+import kcomp.poker.commonpoker.testarea.Pot;
 
 public class MoneyService {
 
@@ -23,7 +24,7 @@ public class MoneyService {
 	 * @param pot
 	 *            the pot
 	 */
-	public static void collectMoneyAndAddToPot(Player player, int amount, Pot pot) {
+	public static void collectMoneyAndAddToPot(Player player, BetType betType, int amount, Pot pot) {
 
 		int playerAmount = player.getChipCount();
 		int ammountToAdd = amount;
@@ -34,31 +35,25 @@ public class MoneyService {
 
 		player.subtractChips(ammountToAdd);
 
-		pot.addToPot(player, ammountToAdd);
-
-		BetSize currentBetSize = pot.getPlayerBetSizesForStreet(player);
-
-		if (currentBetSize == null) {
-			currentBetSize = new BetSize(ammountToAdd, -1);
+		if (betType.equals(BetType.RAISE)) {
+			pot.addRaiseToPot(player, ammountToAdd);
 		} else {
-			currentBetSize.setSmall(currentBetSize.getSmall() + ammountToAdd);
+			pot.addCallToPot(player, ammountToAdd);
 		}
-
-		pot.setPlayerBetSizesForStreet(player, currentBetSize);
 
 	}
 
 	public static void addToPlayerChips(Player player, Pot pot) {
-		player.addChips(pot.getPlayerPotSize(player));
+		// player.addChips(pot.getPlayerPotSize(player));
 	}
 
-	public static void collectMoneyAndAddToPotFromPlayers(Table table, int amount, Pot pot) {
+	public static void collectMoneyAndAddToPotFromPlayers(Table table, BetType betType, int amount, Pot pot) {
 
 		Collection<Player> players = table.getAllPlayers();
 
 		for (Player player : players) {
 
-			collectMoneyAndAddToPot(player, amount, pot);
+			collectMoneyAndAddToPot(player, betType, amount, pot);
 
 		}
 

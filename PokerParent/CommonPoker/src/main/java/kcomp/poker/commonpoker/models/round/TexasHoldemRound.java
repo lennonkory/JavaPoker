@@ -3,13 +3,14 @@ package kcomp.poker.commonpoker.models.round;
 import java.util.Collection;
 import java.util.Queue;
 
+import kcomp.poker.commonpoker.enums.BetType;
 import kcomp.poker.commonpoker.enums.PlayerStatus;
 import kcomp.poker.commonpoker.models.Deck;
 import kcomp.poker.commonpoker.models.Player;
 import kcomp.poker.commonpoker.models.game.MoneyService;
-import kcomp.poker.commonpoker.models.game.Pot;
 import kcomp.poker.commonpoker.models.game.Table;
 import kcomp.poker.commonpoker.rules.Rules;
+import kcomp.poker.commonpoker.testarea.Pot;
 
 public class TexasHoldemRound implements Round {
 
@@ -46,15 +47,15 @@ public class TexasHoldemRound implements Round {
 
 	private void collectAntees(Table table, int antee, Pot pot) {
 
-		MoneyService.collectMoneyAndAddToPotFromPlayers(table, antee, pot);
+		MoneyService.collectMoneyAndAddToPotFromPlayers(table, BetType.CALL, antee, pot);
 
 	}
 
 	private void collectBlinds(Table table, Pot pot, Rules rules) {
 		Player small = table.getAndSetNextPlayer();
-		MoneyService.collectMoneyAndAddToPot(small, rules.getBlindsOrOpens().getSmall(), pot);
+		MoneyService.collectMoneyAndAddToPot(small, BetType.CALL, rules.getBlindsOrOpens().getSmall(), pot);
 		Player large = table.getAndSetNextPlayer();
-		MoneyService.collectMoneyAndAddToPot(large, rules.getBlindsOrOpens().getBig(), pot);
+		MoneyService.collectMoneyAndAddToPot(large, BetType.RAISE, rules.getBlindsOrOpens().getBig(), pot);
 	}
 
 	@Override
@@ -66,10 +67,10 @@ public class TexasHoldemRound implements Round {
 	}
 
 	@Override
-	public void updateRound(Table table, Rules rules, Deck deck) {
+	public boolean updateRound(Table table, Rules rules, Deck deck) {
 
 		if (currentStreet == null) {
-			return;
+			return true;
 		}
 
 		if (currentStreet.isOver(table)) {
@@ -79,8 +80,10 @@ public class TexasHoldemRound implements Round {
 				currentStreet.dealCards(table, deck);
 				currentStreet.setCurrentPlayer(table);
 			}
+			return true;
 		} else {
 			table.getAndSetNextPlayer();
+			return false;
 		}
 
 	}

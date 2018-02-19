@@ -39,4 +39,8 @@ public class SidePot {
 		this.amount += amount;
 	}
 
+	public boolean isPlayerInPot(Player player) {
+		return players.stream().filter(p -> p.getUserName().equals(player.getUserName())).findFirst().isPresent();
+	}
+
 }

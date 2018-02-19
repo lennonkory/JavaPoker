@@ -4,6 +4,7 @@ import java.util.Collection;
 
 import kcomp.poker.commonpoker.exceptions.HandRankException;
 import kcomp.poker.commonpoker.models.Player;
+import kcomp.poker.commonpoker.testarea.SidePot;
 
 /**
  * The Interface WinnerService.
@@ -30,6 +31,6 @@ public interface WinnerService {
 	 * @param pot
 	 *            the pot
 	 */
-	void payWinners(Collection<Player> winners, Pot pot);
+	void payWinners(Collection<Player> winners, SidePot pot);
 
 }

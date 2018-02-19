@@ -1,9 +1,9 @@
 package kcomp.poker.commonpoker.models.round;
 
 import kcomp.poker.commonpoker.models.Deck;
-import kcomp.poker.commonpoker.models.game.Pot;
 import kcomp.poker.commonpoker.models.game.Table;
 import kcomp.poker.commonpoker.rules.Rules;
+import kcomp.poker.commonpoker.testarea.Pot;
 
 public interface Round {
 
@@ -15,6 +15,6 @@ public interface Round {
 
 	public boolean isOver();
 
-	public void updateRound(Table table, Rules rules, Deck deck);
+	boolean updateRound(Table table, Rules rules, Deck deck);
 
 }
